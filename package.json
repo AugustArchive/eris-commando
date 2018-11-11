@@ -1,0 +1,10 @@
+{
+    "name": "eris-commando",
+    "description": "A command framework for the Eris library.",
+    "version": "0.1.0",
+    "dependencies": {
+        "eris": "0.9.0"
+    },
+    "types": "typings/index.d.ts",
+    "main": "src/index.js"
+}
