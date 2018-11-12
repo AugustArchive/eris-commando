@@ -1,10 +1,10 @@
 const { CommandoClient } = require('../src');
-const { token, prefix } = require('./config');
+const { token, prefix } = require('./config.json');
 const path = require('path');
 
-const discord = new CommandoClient({
-    token,
-    prefix,
+new CommandoClient({
+    token: token,
+    prefix: prefix,
     commands: path.join(__dirname, 'commands'),
     events: path.join(__dirname, 'events'),
     owner: ['280158289667555328'],
@@ -17,5 +17,4 @@ const discord = new CommandoClient({
         disableEvents: ['typingStart'],
         disableEveryone: true
     }
-});
-discord.setup();
+}).setup();

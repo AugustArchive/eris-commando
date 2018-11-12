@@ -9,7 +9,7 @@ module.exports = class EventManager {
      * 
      * @param {import('../client')} bot The client
      */
-    constructor(bot, path) {
+    constructor(bot) {
         this.bot = bot;
     }
 
@@ -41,12 +41,12 @@ module.exports = class EventManager {
      * @private
      */
     setup() {
-        readdir(this.bot.options.events, (error, files) => {
+        readdir(this.bot.eventPath, (error, files) => {
             if (error)
                 this.bot.emit('error', error, 0);
 
             files.forEach(f => {
-                const Event = require(`${this.bot.options.events}/${f}`);
+                const Event = require(`${this.bot.eventPath}/${f}`);
                 const event = new Event(this.bot);
 
                 this.handle(event);

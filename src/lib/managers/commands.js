@@ -37,39 +37,15 @@ module.exports = class CommandManager {
      * @private
      */
     async setup() {
-        if (this.bot.options.groupedCommands) {
-            const modules = await readdirSync(this.bot.options.commands);
-            for (let i = 0; i < modules.length; i++)
-                readdir(`${this.bot.options.commands}/${modules[i]}`, (error, files) => {
-                    if (error)
-                        this.bot.emit('error', error, 0);
-
-                    files.forEach((f) => {
-                        try {
-                            const Command = require(`${this.bot.options.commands}/${modules[i]}/${f}`);
-                            const cmd = new Command(this.bot);
-
-                            if (cmd.meta.disabled)
-                                return;
-
-                            if (this.commands.has(cmd.meta.command))
-                                this.bot.emit('commandAlreadyRegistered', cmd.meta);
-
-                            this.commands.set(cmd.meta.command, cmd);
-                            this.bot.emit('commandRegistered', cmd);
-                        } catch (ex) {
-                            this.bot.emit('error', ex, 0);
-                        }
-                    });
-                });
-        } else {
-            readdir(this.bot.options.commands, (error, files) => {
+        const modules = await readdirSync(this.bot.commandPath);
+        for (let i = 0; i < modules.length; i++)
+            readdir(`${this.bot.commandPath}/${modules[i]}`, (error, files) => {
                 if (error)
                     this.bot.emit('error', error, 0);
 
                 files.forEach((f) => {
                     try {
-                        const Command = require(`${this.bot.options.commands}/${modules[i]}/${f}`);
+                        const Command = require(`${this.bot.commandPath}/${modules[i]}/${f}`);
                         const cmd = new Command(this.bot);
 
                         if (cmd.meta.disabled)
@@ -85,7 +61,6 @@ module.exports = class CommandManager {
                     }
                 });
             });
-        }
     }
 
     /**
@@ -119,11 +94,11 @@ module.exports = class CommandManager {
         if (!command)
             return;
 
-        if (cmd.meta.checks.guild && msg.channel.type === 1)
+        if (cmd.meta.guild && msg.channel.type === 1)
             this.bot.emit('commandException', cmd, 'guild');
-        if (cmd.meta.checks.owner && !this.bot.isOwner(msg.author.id))
+        if (cmd.meta.owner && !this.bot.isOwner(msg.author.id))
             this.bot.emit('commandException', cmd, 'owner');
-        if (cmd.meta.checks.nsfw && !msg.channel.nsfw)
+        if (cmd.meta.nsfw && !msg.channel.nsfw)
             this.bot.emit('commandException', cmd, 'nsfw');
 
         if (!this.cooldowns.has(cmd.meta.command))

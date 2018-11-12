@@ -11,7 +11,8 @@ module.exports = class Event {
      */
     constructor(bot, meta) {
         this.bot = bot;
-        this.meta = meta;
+        this.event = meta.event;
+        this.emitter = meta.emitter;
     }
 };
 

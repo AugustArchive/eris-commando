@@ -25,14 +25,14 @@ module.exports = class HelpCommand extends Command {
             this.bot
                 .manager
                 .commands
-                .filter(c => !c.checks.hidden)
+                .filter(c => !c.hidden)
                 .forEach((command) => {
                     if (!(command.meta.category in categories)) categories[command.meta.category] = [];
                     categories[command.meta.category].push(command.meta.command);
                 });
 
             for (const category in categories)
-                help += `**${category}**  **\`>\`**  ${categories[category].map(c => `\`${c}\``).join(', ')}\n`;
+                help += `**${category}**:  ${categories[category].map(c => `\`${c}\``).join(', ')}\n`;
 
             return msg.embed({
                 title: `${this.bot.user.username}#${this.bot.user.discriminator}'s Commands`,

@@ -12,14 +12,16 @@ module.exports = class CommandoClient extends Client {
      * @param {CommandoClientOptions} options The options to setup your bot
      */
     constructor(options) {
-        super(options.token, options);
+        super(options.token, options.client);
 
         this.manager = new CommandManager(this);
         this.events = new EventManager(this);
         this.owners = options.owner;
         this.prefix = options.prefix;
         this.invite = options.invite;
-        this.options = options;
+        this.eventPath = options.events;
+        this.commandPath = options.commands;
+        this.groupCommands = options.groupedCommands;
 
         if (options.defaultHelpCommand)
             this.manager.registerHelp();
@@ -34,7 +36,7 @@ module.exports = class CommandoClient extends Client {
     async setup() {
         this.manager.setup();
         this.events.setup();
-        await super.connect();
+        super.connect();
     }
 
     /**
