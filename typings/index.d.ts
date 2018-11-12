@@ -60,6 +60,9 @@ declare module 'eris-commando' {
 
         public manager: CommandManager;
         public events: EventManager;
+        public prefix: string;
+        public owners: string[];
+        public tag: string;
         
         public setup(): Promise<void>;
         public isOwner(userID: string): boolean;

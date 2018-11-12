@@ -48,6 +48,15 @@ module.exports = class CommandoClient extends Client {
     isOwner(userID) {
         return this.owners.includes(userID);
     }
+
+    /**
+     * Gets the bot tag `{user}#{discrim}`
+     * 
+     * @returns {string}
+     */
+    get tag() {
+        return `${this.user.username}#${this.user.discriminator}`;
+    }
 };
 
 /**
