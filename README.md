@@ -1,5 +1,5 @@
 # eris-commando
-`eris-commando` is a command framework for the [Eris](https://abal.moe/Eris) library.
+`eris-commando` is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
 ## Documentation
 |Class|Description|Constructor?|Properties?|Credits?|
@@ -13,6 +13,8 @@
 |`CommandMessage`|The command message that is an extenable version of `Eris.Message`.|`new CommandMessage(bot: CommandoClient, msg: Message, args: string[], prefix: string)`|`bot`, `msg`, `args`, `prefix`|None|
 
 ## Examples
+> If you're just starting bot development, I advise you to set the `defaultHelpCommand` option enabled.
+>
 > Creating a command
 
 ```js
@@ -72,7 +74,12 @@ const discord = new CommandoClient({
     prefix: '!',
     owner: ['280158289667555328'],
     defaultHelpCommand: true,
-    invite: 'https://discord.gg/some_invite'
+    invite: 'https://discord.gg/some_invite',
+    client: {
+        maxShards: 'auto',
+        disableEveryone: true,
+        autoreconnect: true
+    }
 });
 discord.setup();
 ```
