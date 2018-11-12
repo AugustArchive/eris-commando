@@ -4,7 +4,7 @@
 ## Documentation
 |Class|Description|Constructor?|Properties?|Credits?|
 |-----|-----------|------------|-----------|--------|
-|`CommandoClient`|The base client|`new CommandoClient(options: CommandoClientOptions & ClientOptions)`|`manager`, `events`, `owners`, `prefix`, `invite`|Nope...|
+|`CommandoClient`|The base client|`new CommandoClient(options: CommandoClientOptions)`|`manager`, `events`, `owners`, `prefix`, `invite`|Nope...|
 |`Collection<K, V>`|The collection class for all of the commands and cooldowns|`new Collection(iterable?: any)`|`...`|[discord.js](https://github.com/discordjs/discord.js/blob/master/src/util/Collection.js)|
 |`CommandManager`|The command management for `eris-commando`|`new CommandManager(bot: CommandoClient, path: string)`|`commands`, `cooldowns`, `bot`|None|
 |`EventManager`|The event management for `eris-commando`|`new EventManager(bot: CommandoClient, path: string)`|`bot`|None|
@@ -85,6 +85,7 @@ discord.setup();
 ```
 
 ## Bots that use eris-commando:
-* Noel (Private): Made by August#5820
+* Noel: Made by August#5820
+* [Yokitsu](https://github.com/voided-x/Yokitsu): made by August#5820 and void#0001
 
 Submit a PR to add your bot if you use the library!
