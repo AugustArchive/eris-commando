@@ -256,7 +256,7 @@ declare module 'eris-commando' {
         disabled?: boolean;
     };
     export type EventMeta = {
-        event: string;
+        event: Emittable;
         emitter?: CommandoEventEmitter;
     };
     export type ExceptionReason = "owner" | "guild" | "nsfw";
