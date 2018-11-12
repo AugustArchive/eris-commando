@@ -177,7 +177,7 @@ declare module 'eris-commando' {
         public on(event: "commandCooldown", listener: (msg: CommandMessage, command: Command, left: number) => void): this;
         public on(event: "commandRun", listener: (command: Command) => void): this;
         public on(event: "commandError", listener: (command: Command, error: NodeJS.ErrnoException) => void): this;
-        public on(event: "commandAlreadyRegistered", listener: (meta: CommandMeta) => void): this;
+        public on(event: "commandAlreadyRegistered", listener: (command: Command) => void): this;
         public on(event: "commandException", listener: (msg: CommandMessage, command: Command, reason: ExceptionReason) => void): this;
     }
     export class Command {
@@ -193,7 +193,7 @@ declare module 'eris-commando' {
         constructor(bot: CommandoClient, meta: EventMeta);
 
         public bot: CommandoClient;
-        public event: string;
+        public event: Emittable;
         public emitter?: CommandoEventEmitter;
     }
     export class CommandMessage {
@@ -260,4 +260,16 @@ declare module 'eris-commando' {
         emitter?: CommandoEventEmitter;
     };
     export type ExceptionReason = "owner" | "guild" | "nsfw";
+    export type Emittable = "ready" | "disconnect" | "callCreate" | "callRing" | "callDelete" |
+      "callUpdate" | "channelCreate" | "channelDelete" | "channelPinUpdate" | "channelRecipientAdd" |
+      "channelRecepientRemove" | "channelUpdate" | "friendSuggestionCreate" | "friendSuggestionDelete" |
+      "guildAvaliable" | "guildBanAdd" | "guildBanRemove" | "guildDelete" | "guildUnavaliable" | "guildCreate" |
+      "guildEmojisUpdate" | "guildMemberAdd" | "guildMemberChunk" | "guildMemberRemove" | "guildMemberUpdate" |
+      "guildRoleCreate" | "guildRoleDelete" | "guildRoleUpdate" | "guildUpdate" | "hello" | "messageCreate" | 
+      "messageDeleteBulk" | "messageReactionRemoveAll" | "messageDeleteBulk" | "messageReactionAdd" | 
+      "messageReactionRemove" | "messageUpdate" | "presenceUpdate" | "rawWS" | "unknown" | "relationshipAdd" | 
+      "relationshipRemove" | "relationshipUpdate" | "typingStart" | "unavaliableGuildCreate" | "userUpdate" |
+      "voiceChannelJoin" | "voiceChannelLeave" | "voiceChannelSwitch" | "voiceStateUpdate" | "warn" | "debug" |
+      "shardDisconnect" | "error" | "shardPreReady" | "connect" | "shardReady" | "shardResume" | "commandRegistered" |
+      "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException";
 }
