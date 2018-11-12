@@ -29,7 +29,10 @@ module.exports = class Command {
      * @returns {string}
      */
     usage() {
-        return `${this.bot.prefix}${this.meta.command} ${this.meta.usage}`;
+        if (this.meta.usage)
+            return `${this.bot.prefix}${this.meta.command} ${this.meta.usage}`;
+        else
+            return `${this.bot.prefix}${this.meta.command}`;
     }
 };
 
