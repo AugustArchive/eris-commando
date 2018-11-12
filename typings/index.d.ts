@@ -206,7 +206,7 @@ declare module 'eris-commando' {
         public guild: Guild;
         public sender: User;
 
-        public send(content: string): Promise<Message>;
+        public reply(content: string): Promise<Message>;
         public embed(content: EmbedOptions): Promise<Message>;
         public code(lang: string | null, content: string): Promise<Message>;
     }
