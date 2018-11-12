@@ -60,6 +60,7 @@ declare module 'eris-commando' {
 
         public manager: CommandManager;
         public events: EventManager;
+        public options: CommandoClientOptions;
         
         public setup(): Promise<void>;
         public isOwner(userID: string): boolean;
@@ -177,6 +178,7 @@ declare module 'eris-commando' {
         public on(event: "commandCooldown", listener: (msg: CommandMessage, command: Command, left: number) => void): this;
         public on(event: "commandRun", listener: (msg: CommandMessage, command: Command) => void): this;
         public on(event: "commandError", listener: (command: Command, error: NodeJS.ErrnoException) => void): this;
+        public on(event: "commandAlreadyRegistered", listener: (meta: CommandMeta) => void): this;
     }
     export class Command {
         constructor(bot: CommandoClient, meta: CommandMeta);
@@ -184,7 +186,7 @@ declare module 'eris-commando' {
         public bot: CommandoClient;
         public meta: CommandMeta;
 
-        public run(ctx: CommandMessage): Promise<void>;
+        public run(msg: CommandMessage): Promise<void>;
         public usage(): string;
     }
     export class Event {
@@ -216,8 +218,8 @@ declare module 'eris-commando' {
         public commands: Collection<string, Command>;
 
         public setup(): void;
-        public handle(msg: Message): void;
-        private registerHelpCommand(): void;
+        private handle(msg: Message): void;
+        private registerHelp(): void;
     }
     export class EventManager {
         constructor(bot: CommandoClient, path: string);

@@ -22,7 +22,7 @@ module.exports = class CommandoClient extends Client {
         this.options = options;
 
         if (options.defaultHelpCommand)
-            this.manager.registerHelpCommand();
+            this.manager.registerHelp();
     }
 
     /**
