@@ -179,6 +179,7 @@ declare module 'eris-commando' {
         public on(event: "commandRun", listener: (msg: CommandMessage, command: Command) => void): this;
         public on(event: "commandError", listener: (command: Command, error: NodeJS.ErrnoException) => void): this;
         public on(event: "commandAlreadyRegistered", listener: (meta: CommandMeta) => void): this;
+        public on(event: "commandException", listener: (command: Command, reason: ExceptionReason) => void): this;
     }
     export class Command {
         constructor(bot: CommandoClient, meta: CommandMeta);
@@ -257,4 +258,5 @@ declare module 'eris-commando' {
         event: string;
         emitter?: CommandoEventEmitter;
     };
+    export type ExceptionReason = "owner" | "guild" | "nsfw";
 }
