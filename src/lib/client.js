@@ -9,13 +9,13 @@ module.exports = class CommandoClient extends Client {
      *  - All options must be in a [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) or in curly brackets (`{}`)
      *  - All options are in the types: `Commando.CommandoClientOptions & Eris.ClientOptions`
      * 
-     * @param {CommandoClientOptions & import('eris').ClientOptions} options The options to setup your bot
+     * @param {CommandoClientOptions} options The options to setup your bot
      */
     constructor(options) {
         super(options.token, options);
 
-        this.manager = new CommandManager(this, options.commands);
-        this.events = new EventManager(this, options.events);
+        this.manager = new CommandManager(this);
+        this.events = new EventManager(this);
         this.owners = options.owner;
         this.prefix = options.prefix;
         this.invite = options.invite;
@@ -23,6 +23,9 @@ module.exports = class CommandoClient extends Client {
 
         if (options.defaultHelpCommand)
             this.manager.registerHelp();
+
+        // don't emit 'messageCreate' unless it's not command handler related...
+        this.on('messageCreate', (msg) => this.manager.handle(msg));
     }
 
     /**
@@ -55,4 +58,5 @@ module.exports = class CommandoClient extends Client {
  * @prop {string} invite The discord.gg invite if an error occured
  * @prop {string[]} owner The owner array or string
  * @prop {string} token The discord bot token
+ * @prop {import('eris').ClientOptions} client The eris client options
  */

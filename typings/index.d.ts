@@ -176,7 +176,7 @@ declare module 'eris-commando' {
         public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
         public on(event: "commandRegistered", listener: (command: Command) => void): this;
         public on(event: "commandCooldown", listener: (msg: CommandMessage, command: Command, left: number) => void): this;
-        public on(event: "commandRun", listener: (msg: CommandMessage, command: Command) => void): this;
+        public on(event: "commandRun", listener: (command: Command) => void): this;
         public on(event: "commandError", listener: (command: Command, error: NodeJS.ErrnoException) => void): this;
         public on(event: "commandAlreadyRegistered", listener: (meta: CommandMeta) => void): this;
         public on(event: "commandException", listener: (command: Command, reason: ExceptionReason) => void): this;
@@ -209,27 +209,27 @@ declare module 'eris-commando' {
 
         public send(content: string): Promise<Message>;
         public embed(content: EmbedOptions): Promise<Message>;
-        public codeblock(lang: string | null, content: string): Promise<Message>;
+        public code(lang: string | null, content: string): Promise<Message>;
     }
     export class CommandManager {
-        constructor(bot: CommandoClient, path: string);
+        constructor(bot: CommandoClient);
 
         public bot: CommandoClient;
         public path: string;
         public commands: Collection<string, Command>;
 
-        public setup(): void;
+        private setup(): void;
         private handle(msg: Message): void;
         private registerHelp(): void;
     }
     export class EventManager {
-        constructor(bot: CommandoClient, path: string);
+        constructor(bot: CommandoClient);
 
         public bot: CommandoClient;
         public path: string;
 
-        public do(event: Event): void;
-        public setup(): void;
+        public handle(event: Event): void;
+        private setup(): void;
     }
     export type CommandoClientOptions = {
         token: string;
@@ -240,7 +240,8 @@ declare module 'eris-commando' {
         owner: string[];
         defaultHelpCommand?: boolean;
         invite: string;
-    } & ClientOptions;
+        client: ClientOptions;
+    };
     export type CommandoEventEmitter = "on" | "once";
     export type CommandMeta = {
         command: string;
@@ -248,10 +249,13 @@ declare module 'eris-commando' {
         usage: string;
         category?: string;
         aliases?: string[];
+        cooldown?: number;
         checks?: {
             hidden?: boolean;
             owner?: boolean;
             guild?: boolean;
+            nsfw?: boolean;
+            disabled?: boolean;
         }
     };
     export type EventMeta = {
