@@ -201,7 +201,6 @@ declare module 'eris-commando' {
         public nsfw?: boolean;
 
         public run(msg: CommandMessage): Promise<void>;
-        public usage(): string;
     }
     export class Event {
         constructor(bot: CommandoClient, meta: EventMeta);
@@ -219,6 +218,7 @@ declare module 'eris-commando' {
         public prefix: string;
         public guild: Guild;
         public sender: User;
+        public collector: MessageCollector;
 
         public reply(content: string): Promise<Message>;
         public embed(content: EmbedOptions): Promise<Message>;
