@@ -11,7 +11,16 @@ module.exports = class Command {
      */
     constructor(bot, meta) {
         this.bot = bot;
-        this.meta = meta;
+        this.command = meta.command;
+        this.description = meta.description;
+        this.usage = meta.usage || '';
+        this.category = meta.category || 'Core';
+        this.aliases = meta.aliases || [];
+        this.hidden = meta.hidden || false;
+        this.disabled = meta.disabled || false;
+        this.owner = meta.owner || false;
+        this.nsfw = meta.nsfw || false;
+        this.guild = meta.guild || false;
     }
 
     /**
@@ -44,10 +53,9 @@ module.exports = class Command {
  * @prop {string} category The category name 
  * @prop {string[]} [aliases=[]] The command alias(es)
  * @prop {number} [cooldown=3] The command cooldown
- * @prop {object} [checks] The command checks (disabled, hidden, owner, guild, nsfw)
- * @prop {boolean} [checks.hidden=false] Whenther or not the command should be hidden from the help command
- * @prop {boolean} [checks.disabled=false] Whenther or not the command shouldn't be in the Command collection
- * @prop {boolean} [checks.owner=false] Whenther or not the command should be executed by the owners
- * @prop {boolean} [checks.nsfw=false] Whenther or not the command should be executed in nsfw channels
- * @prop {boolean} [checks.guild=false] Whenther or not the command should be handled in DM's or not.
+ * @prop {boolean} [hidden=false] Whenther or not the command should be hidden from the help command
+ * @prop {boolean} [disabled=false] Whenther or not the command shouldn't be in the Command collection
+ * @prop {boolean} [owner=false] Whenther or not the command should be executed by the owners
+ * @prop {boolean} [nsfw=false] Whenther or not the command should be executed in nsfw channels
+ * @prop {boolean} [guild=false] Whenther or not the command should be handled in DM's or not.
  */

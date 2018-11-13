@@ -9,6 +9,6 @@ module.exports = class ReadyEvent extends Event {
     }
 
     run(msg, command, left) {
-        msg.reply(`${msg.sender.username}, you have ${left.toFixed()} second${left > 1 ? 's' : ''} to execute the \`${command.meta.command}\` command.`);
+        msg.reply(`${msg.sender.username}, you have ${left.toFixed()} second${left > 1 ? 's' : ''} to execute the \`${command.command}\` command.`);
     }
 };

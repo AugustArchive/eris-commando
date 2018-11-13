@@ -10,10 +10,10 @@ module.exports = class ReadyEvent extends Event {
 
     run(msg, command, reason) {
         if (reason === 'guild')
-            return msg.reply(`${msg.sender.username}, you can't run the \`${command.meta.command}\` command without being in a guild.`);
+            return msg.reply(`${msg.sender.username}, you can't run the \`${command.command}\` command without being in a guild.`);
         else if (reason === 'owner')
-            return msg.reply(`${msg.sender.username}, you can't run the \`${command.meta.command}\` command without being the owner of this bot.`);
+            return msg.reply(`${msg.sender.username}, you can't run the \`${command.command}\` command without being the owner of this bot.`);
         else if (reason === 'nsfw')
-            return msg.reply(`${msg.sender.username}, you can't run the \`${command.meta.command}\` command without being in an NSFW channel.`);
+            return msg.reply(`${msg.sender.username}, you can't run the \`${command.command}\` command without being in an NSFW channel.`);
     }
 };

@@ -12,7 +12,7 @@ module.exports = class CommandoClient extends Client {
      * @param {CommandoClientOptions} options The options to setup your bot
      */
     constructor(options) {
-        super(options.token, options.client);
+        super(options.token, options.options);
 
         this.manager = new CommandManager(this);
         this.events = new EventManager(this);
@@ -21,8 +21,7 @@ module.exports = class CommandoClient extends Client {
         this.invite = options.invite;
         this.eventPath = options.events;
         this.commandPath = options.commands;
-        this.groupCommands = options.groupedCommands;
-
+        
         if (options.defaultHelpCommand)
             this.manager.registerHelp();
 
@@ -50,12 +49,21 @@ module.exports = class CommandoClient extends Client {
     }
 
     /**
-     * Gets the bot tag `{user}#{discrim}`
+     * Gets the bot tag 
      * 
+     * @example
+     *  this.bot.tag; // => User#0001
      * @returns {string}
      */
     get tag() {
         return `${this.user.username}#${this.user.discriminator}`;
+    }
+
+    /**
+     * Checks the current optime of the bot
+     */
+    getUptime() {
+        return Date.now() - this.startTime;
     }
 };
 
@@ -63,11 +71,10 @@ module.exports = class CommandoClient extends Client {
  * @typedef {Object} CommandoClientOptions
  * @prop {string} commands The command path
  * @prop {string} events The event path
- * @prop {boolean} [groupedCommands=true] If you want to group the commands. Default is `true`
  * @prop {boolean} [defaultHelpCommand=false] If you want to use the default help command that Eris Commando provides. Default is `false`.
  * @prop {string} prefix The command prefix
  * @prop {string} invite The discord.gg invite if an error occured
  * @prop {string[]} owner The owner array or string
  * @prop {string} token The discord bot token
- * @prop {import('eris').ClientOptions} client The eris client options
+ * @prop {import('eris').ClientOptions} options The eris client options
  */

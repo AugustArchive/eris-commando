@@ -1,3 +1,5 @@
+const MessageCollector = require('./collector');
+
 module.exports = class CommandMessage {
     /**
      * The command message class
@@ -14,6 +16,7 @@ module.exports = class CommandMessage {
      * @param {string} prefix The command prefix
      */
     constructor(bot, msg, args, prefix) {
+        Object.assign(this, msg);
         this.bot = bot;
         this.msg = msg;
         this.args = args;
@@ -28,6 +31,11 @@ module.exports = class CommandMessage {
     /** @returns {import('eris').User} */
     get sender() {
         return this.msg.author;
+    }
+
+    /** @returns {MessageCollector} */
+    get collector() {
+        return new MessageCollector(this.bot);
     }
 
     /**

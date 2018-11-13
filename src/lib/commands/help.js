@@ -15,7 +15,7 @@ module.exports = class HelpCommand extends Command {
     /**
      * Execute the 'help' command
      * 
-     * @param {import('../interfaces/message')} msg The command message
+     * @param {import('./interfaces/message')} msg The command message
      */
     async run(msg) {
         const categories = {};
@@ -27,8 +27,8 @@ module.exports = class HelpCommand extends Command {
                 .commands
                 .filter(c => !c.hidden)
                 .forEach((command) => {
-                    if (!(command.meta.category in categories)) categories[command.meta.category] = [];
-                    categories[command.meta.category].push(command.meta.command);
+                    if (!(command.category in categories)) categories[command.category] = [];
+                    categories[command.category].push(command.command);
                 });
 
             for (const category in categories)
@@ -43,19 +43,19 @@ module.exports = class HelpCommand extends Command {
         const command = this.bot.manager.commands.get(msg.args[0]);
         if (command) 
             return msg.embed({
-                title: `Command ${command.meta.command}`,
-                description: command.meta.description,
+                title: `Command ${command.command}`,
+                description: command.description,
                 fields: [{
                     name: 'Usage', value: command.usage(), inline: true
                 },
                 {
-                    name: 'Category', value: command.meta.category, inline: true
+                    name: 'Category', value: command.category, inline: true
                 },
                 {
-                    name: 'Aliases', value: command.meta.aliases > 0 ? command.meta.aliases.join(', ') : 'None', inline: true
+                    name: 'Aliases', value: command.aliases > 0 ? command.aliases.join(', ') : 'None', inline: true
                 },
                 {
-                    name: 'Cooldown', value: command.meta.cooldown, inline: true
+                    name: 'Cooldown', value: command.cooldown, inline: true
                 }]
             });
         else

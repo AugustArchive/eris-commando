@@ -9,6 +9,6 @@ module.exports = class ReadyEvent extends Event {
     }
 
     run(command, ex) {
-        console.log(`Command ${command.meta.command}: ${ex.stack}`);
+        console.log(`Command ${command.command}: ${ex.stack}`);
     }
 };

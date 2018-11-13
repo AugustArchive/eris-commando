@@ -28,7 +28,7 @@ module.exports = class CommandManager {
      */
     registerHelp() {
         const help = new HelpCommand(this.bot);
-        this.commands.set(help.meta.command, help);
+        this.commands.set(help.command, help);
     }
 
     /**
@@ -48,13 +48,13 @@ module.exports = class CommandManager {
                         const Command = require(`${this.bot.commandPath}/${modules[i]}/${f}`);
                         const cmd = new Command(this.bot);
 
-                        if (cmd.meta.disabled)
+                        if (cmd.disabled)
                             return;
 
-                        if (this.commands.has(cmd.meta.command))
-                            this.bot.emit('commandAlreadyRegistered', cmd.meta);
+                        if (this.commands.has(cmd.command))
+                            this.bot.emit('commandAlreadyRegistered', cmd);
 
-                        this.commands.set(cmd.meta.command, cmd);
+                        this.commands.set(cmd.command, cmd);
                         this.bot.emit('commandRegistered', cmd);
                     } catch (ex) {
                         this.bot.emit('error', ex, 0);
@@ -94,19 +94,19 @@ module.exports = class CommandManager {
         if (!command)
             return;
 
-        if (cmd.meta.guild && msg.channel.type === 1)
+        if (cmd.guild && msg.channel.type === 1)
             this.bot.emit('commandException', cmd, 'guild');
-        if (cmd.meta.owner && !this.bot.isOwner(msg.author.id))
+        if (cmd.owner && !this.bot.isOwner(msg.author.id))
             this.bot.emit('commandException', cmd, 'owner');
-        if (cmd.meta.nsfw && !msg.channel.nsfw)
+        if (cmd.nsfw && !msg.channel.nsfw)
             this.bot.emit('commandException', cmd, 'nsfw');
 
-        if (!this.cooldowns.has(cmd.meta.command))
-            this.cooldowns.set(cmd.meta.command, new Collection());
+        if (!this.cooldowns.has(cmd.command))
+            this.cooldowns.set(cmd.command, new Collection());
 
         let now = Date.now();
-        let timestamps = this.cooldowns.get(cmd.meta.command);
-        const amount = (cmd.meta.cooldown) * 1000;
+        let timestamps = this.cooldowns.get(cmd.command);
+        const amount = (cmd.cooldown) * 1000;
 
         if (timestamps.has(msg.author.id)) {
             const time = timestamps.get(msg.author.id) + amount;

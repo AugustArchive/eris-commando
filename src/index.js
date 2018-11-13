@@ -6,5 +6,6 @@ module.exports = {
     Collection: require('./lib/util/collection'),
     CommandManager: require('./lib/managers/commands'),
     EventManager: require('./lib/managers/events'),
-    CommandMessage: require('./lib/interfaces/message')
+    CommandMessage: require('./lib/interfaces/message'),
+    MessageCollector: require('./lib/interfaces/collector')
 };

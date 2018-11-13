@@ -9,6 +9,6 @@ module.exports = class ReadyEvent extends Event {
     }
 
     run(command) {
-        console.log(`Command ${command.meta.command} has been registered`);
+        console.log(`Command ${command.command} has been registered`);
     }
 };
