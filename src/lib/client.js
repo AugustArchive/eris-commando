@@ -1,6 +1,7 @@
 const { Client } = require('eris');
 const CommandManager = require('./managers/commands');
 const EventManager = require('./managers/events');
+const TaskManager = require('./managers/tasks');
 
 module.exports = class CommandoClient extends Client {
     /**
@@ -16,11 +17,13 @@ module.exports = class CommandoClient extends Client {
 
         this.manager = new CommandManager(this);
         this.events = new EventManager(this);
+        this.tasks = new TaskManager(this);
         this.owners = options.owner;
         this.prefix = options.prefix;
         this.invite = options.invite;
         this.eventPath = options.events;
         this.commandPath = options.commands;
+        this.tasksPath = options.tasks;
         
         if (options.defaultHelpCommand)
             this.manager.registerHelp();
@@ -35,6 +38,7 @@ module.exports = class CommandoClient extends Client {
     async setup() {
         this.manager.setup();
         this.events.setup();
+        this.tasks.setup();
         super.connect();
     }
 
@@ -77,4 +81,5 @@ module.exports = class CommandoClient extends Client {
  * @prop {string[]} owner The owner array or string
  * @prop {string} token The discord bot token
  * @prop {import('eris').ClientOptions} options The eris client options
+ * @prop {string} tasks The tasks path
  */

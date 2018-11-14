@@ -1,17 +1,6 @@
 # eris-commando
 `eris-commando` is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
-## Documentation
-|Class|Description|Constructor?|Properties?|Credits?|
-|-----|-----------|------------|-----------|--------|
-|`CommandoClient`|The base client|`new CommandoClient(options: CommandoClientOptions)`|`manager`, `events`, `owners`, `prefix`, `invite`|Nope...|
-|`Collection<K, V>`|The collection class for all of the commands and cooldowns|`new Collection(iterable?: any)`|`...`|[discord.js](https://github.com/discordjs/discord.js/blob/master/src/util/Collection.js)|
-|`CommandManager`|The command management for `eris-commando`|`new CommandManager(bot: CommandoClient)`|`commands`, `cooldowns`, `bot`|None|
-|`EventManager`|The event management for `eris-commando`|`new EventManager(bot: CommandoClient)`|`bot`|None|
-|`Command`|The command class. (EXTENDABLE)|Don't...|`bot`, `meta`|None|
-|`Event`|The event class. (EXTENDABLE)|Don't...|`bot`, `event`, `emitter?`|None|
-|`CommandMessage`|The command message that is an extenable version of `Eris.Message`.|`new CommandMessage(bot: CommandoClient, msg: Message, args: string[], prefix: string)`|`bot`, `msg`, `args`, `prefix`|None|
-
 ## Examples
 > If you're just starting bot development, I advise you to set the `defaultHelpCommand` option enabled.
 >
@@ -75,7 +64,7 @@ const discord = new CommandoClient({
     owner: ['280158289667555328'],
     defaultHelpCommand: true,
     invite: 'https://discord.gg/some_invite',
-    client: {
+    options: {
         maxShards: 'auto',
         disableEveryone: true,
         autoreconnect: true

@@ -7,5 +7,7 @@ module.exports = {
     CommandManager: require('./lib/managers/commands'),
     EventManager: require('./lib/managers/events'),
     CommandMessage: require('./lib/interfaces/message'),
-    MessageCollector: require('./lib/interfaces/collector')
+    MessageCollector: require('./lib/interfaces/collector'),
+    TaskManager: require('./lib/managers/tasks'),
+    Task: require('./lib/interfaces/task')
 };

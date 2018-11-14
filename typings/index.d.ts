@@ -60,6 +60,7 @@ declare module 'eris-commando' {
 
         public manager: CommandManager;
         public events: EventManager;
+        public tasks: TaskManager;
         public prefix: string;
         public owners: string[];
         public tag: string;
@@ -183,6 +184,8 @@ declare module 'eris-commando' {
         public on(event: "commandError", listener: (command: Command, error: NodeJS.ErrnoException) => void): this;
         public on(event: "commandAlreadyRegistered", listener: (command: Command) => void): this;
         public on(event: "commandException", listener: (msg: CommandMessage, command: Command, reason: ExceptionReason) => void): this;
+        public on(event: "taskAlreadyRegistered", listener: (task: Task) => void): this;
+        public on(event: "taskRegistered", listener: (task: Task) => void): this;
     }
     export class Command {
         constructor(bot: CommandoClient, meta: CommandMeta);
@@ -242,6 +245,14 @@ declare module 'eris-commando' {
         public handle(event: Event): void;
         private setup(): void;
     }
+    export class TaskManager {
+      constructor(bot: CommandoClient);
+
+      public bot: CommandoClient;
+      public tasks: Collection<string, Task>;
+
+      private setup(): void;
+    }
     export class MessageCollector {
       constructor(bot: CommandoClient);
 
@@ -250,22 +261,31 @@ declare module 'eris-commando' {
       public verify(msg: Message): void;
       public awaitMessage(filter: (msg: Message) => boolean, options: MessageCollectorOptions): Promise<Message>;
     }
+    export class Task {
+      constructor(bot: CommandoClient, meta: TaskMeta);
+
+      public bot: CommandoClient;
+      public name: string;
+      public interval: number;
+
+      public run(): void;
+    }
     export type CommandoClientOptions = {
         token: string;
         commands: string,
         events: string,
-        groupCommands?: boolean;
         prefix: string;
         owner: string[];
         defaultHelpCommand?: boolean;
         invite: string;
         options: ClientOptions;
+        tasks: string;
     };
     export type CommandoEventEmitter = "on" | "once";
     export type CommandMeta = {
         command: string;
         description: string;
-        usage: string;
+        usage?: string;
         category?: string;
         aliases?: string[];
         cooldown?: number;
@@ -291,10 +311,15 @@ declare module 'eris-commando' {
       "relationshipRemove" | "relationshipUpdate" | "typingStart" | "unavaliableGuildCreate" | "userUpdate" |
       "voiceChannelJoin" | "voiceChannelLeave" | "voiceChannelSwitch" | "voiceStateUpdate" | "warn" | "debug" |
       "shardDisconnect" | "error" | "shardPreReady" | "connect" | "shardReady" | "shardResume" | "commandRegistered" |
-      "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException";
+      "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
+      "taskAlreadyRegistered" | "taskRegistered";
     export type MessageCollectorOptions = {
       channelId: string;
       userId: string;
       timeout?: number;
+    };
+    export type TaskMeta = {
+      name: string;
+      interval: number;
     };
 }
