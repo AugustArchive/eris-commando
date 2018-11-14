@@ -11,10 +11,11 @@ new CommandoClient({
     invite: 'https://discord.gg/7TtMP2n',
     defaultHelpCommand: true,
     groupedCommands: true,
-    client: {
+    options: {
         maxShards: 'auto',
         autoreconnect: true,
         disableEvents: ['typingStart'],
         disableEveryone: true
-    }
+    },
+    tasks: path.join(__dirname, 'tasks')
 }).setup();
