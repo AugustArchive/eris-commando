@@ -258,8 +258,9 @@ declare module 'eris-commando' {
       public bot: CommandoClient;
       public tasks: Collection<string, Task>;
 
-      private setup(msg: CommandMessage): void;
+      private setup(): void;
     }
+    export class InihibitorManager {}
     export class MessageCollector {
       constructor(bot: CommandoClient);
 
@@ -275,8 +276,9 @@ declare module 'eris-commando' {
       public name: string;
       public interval: number;
 
-      public run(msg: CommandMessage): void;
+      public run(msg?: CommandMessage): Promise<void>;
     }
+    export class Inhibitor {}
     export type CommandoClientOptions = {
         token: string;
         commands: string,
