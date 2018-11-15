@@ -1,6 +1,23 @@
 # eris-commando
 `eris-commando` is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
+## Installation
+> Master Branch:
+
+```sh
+$ npm i eris-commando
+# or
+$ yarn add eris-commando
+```
+
+> Indev Branch:
+
+```sh
+$ npm i github:auguwu/eris-commando#dev
+# or
+$ yarn add github:auguwu/eris-commando#dev
+```
+
 ## Examples
 > If you're just starting bot development, I advise you to set the `defaultHelpCommand` option enabled.
 >
