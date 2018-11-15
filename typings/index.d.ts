@@ -266,7 +266,7 @@ declare module 'eris-commando' {
       public collectors: {};
 
       public verify(msg: Message): void;
-      public awaitMessage(filter: (msg: Message) => boolean, options: MessageCollectorOptions): Promise<Message>;
+      public awaitMessage(filter: MessageFilter, options: MessageCollectorOptions): Promise<Message>;
     }
     export class Task {
       constructor(bot: CommandoClient, meta: TaskMeta);
@@ -329,4 +329,5 @@ declare module 'eris-commando' {
       name: string;
       interval: number;
     };
+    export type MessageFilter = (msg: Message) => boolean;
 }
