@@ -17,7 +17,7 @@ declare module 'eris-commando' {
         GuildOptions, Embed,
         Attachment, OldVoiceState,
         VoiceChannel, PossiblyUncachedMessage,
-        UnavailableGuild, RawPacket
+        UnavailableGuild, RawPacket, Textable
     } from 'eris';
 
     export const version: string;
@@ -222,6 +222,8 @@ declare module 'eris-commando' {
         public guild: Guild;
         public sender: User;
         public collector: MessageCollector;
+        public member?: Member;
+        public channel: TextableChannel;
 
         public reply(content: string): Promise<Message>;
         public embed(content: EmbedOptions): Promise<Message>;
@@ -251,7 +253,7 @@ declare module 'eris-commando' {
       public bot: CommandoClient;
       public tasks: Collection<string, Task>;
 
-      private setup(): void;
+      private setup(msg: CommandMessage): void;
     }
     export class MessageCollector {
       constructor(bot: CommandoClient);
@@ -268,7 +270,7 @@ declare module 'eris-commando' {
       public name: string;
       public interval: number;
 
-      public run(): void;
+      public run(msg: CommandMessage): void;
     }
     export type CommandoClientOptions = {
         token: string;
@@ -314,8 +316,8 @@ declare module 'eris-commando' {
       "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
       "taskAlreadyRegistered" | "taskRegistered";
     export type MessageCollectorOptions = {
-      channelId: string;
-      userId: string;
+      channelID: string;
+      userID: string;
       timeout?: number;
     };
     export type TaskMeta = {
