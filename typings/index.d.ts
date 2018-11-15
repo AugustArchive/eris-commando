@@ -1,6 +1,6 @@
 // TYPESCRIPT DECLARIONS FOR ERIS COMMANDO
 // Created by August#5820 (on Discord) or auguwu (on GitHub)
-// If you see anything wrong, make sure make a PR!
+// If you see anything wrong, make sure to make a Pull Request in this repository.
 
 declare module 'eris-commando' {
     import { 
@@ -68,6 +68,7 @@ declare module 'eris-commando' {
         public setup(): Promise<void>;
         public isOwner(userID: string): boolean;
         public getUptime(): number;
+        // #region Eris
         public on(event: string, listener: Function): this;
         public on(event: "ready" | "disconnect", listener: () => void): this;
         public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
@@ -178,6 +179,8 @@ declare module 'eris-commando' {
           listener: (err: Error, id: number) => void,
         ): this;
         public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
+        //#endregion
+        //#region Commando
         public on(event: "commandRegistered", listener: (command: Command) => void): this;
         public on(event: "commandCooldown", listener: (msg: CommandMessage, command: Command, left: number) => void): this;
         public on(event: "commandRun", listener: (command: Command) => void): this;
@@ -186,7 +189,9 @@ declare module 'eris-commando' {
         public on(event: "commandException", listener: (msg: CommandMessage, command: Command, reason: ExceptionReason) => void): this;
         public on(event: "taskAlreadyRegistered", listener: (task: Task) => void): this;
         public on(event: "taskRegistered", listener: (task: Task) => void): this;
+        //#endregion
     }
+    export { CommandoClient as Client }; // Make it you can use { Client } in the import for TypeScript or JSDoc for JavaScript
     export class Command {
         constructor(bot: CommandoClient, meta: CommandMeta);
 
