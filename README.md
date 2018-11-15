@@ -44,8 +44,10 @@ module.exports = class MyCommand extends Command {
     async run(msg) {
         if (!msg.args[0])
             return msg.reply("No content to respond?");
-        else
-            return msg.codeblock(null, msg.args.slice(0).join(' '));
+        else {
+            const argStr = msg.args.slice(0).join(" ");
+            return msg.code('ini', `#${argStr}`);
+        }
     }
 };
 ```
