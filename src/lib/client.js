@@ -18,6 +18,8 @@ module.exports = class CommandoClient extends Client {
         this.manager = new CommandManager(this);
         this.events = new EventManager(this);
         this.tasks = new TaskManager(this);
+        this.language = new LanguageManager(this);
+        this.inhibitors = new InhibitorManager(this);
         this.owners = options.owner;
         this.prefix = options.prefix;
         this.invite = options.invite;
@@ -39,6 +41,8 @@ module.exports = class CommandoClient extends Client {
         this.manager.setup();
         this.events.setup();
         this.tasks.setup();
+        this.language.setup();
+        this.inhibitors.setup();
         super.connect();
     }
 
