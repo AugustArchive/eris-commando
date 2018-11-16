@@ -189,6 +189,8 @@ declare module 'eris-commando' {
         public on(event: "commandException", listener: (msg: CommandMessage, command: Command, reason: ExceptionReason) => void): this;
         public on(event: "taskAlreadyRegistered", listener: (task: Task) => void): this;
         public on(event: "taskRegistered", listener: (task: Task) => void): this;
+        public on(event: "databaseConnected", listener: () => void): this;
+        public on(event: "databaseException", listener: (error: DatabaseException) => void): this;
         //#endregion
     }
     export { CommandoClient as Client }; // Make it you can use { Client } in the import for TypeScript or JSDoc for JavaScript
@@ -261,6 +263,7 @@ declare module 'eris-commando' {
       private setup(): void;
     }
     export class InihibitorManager {}
+    export class LanguageManager {}
     export class MessageCollector {
       constructor(bot: CommandoClient);
 
@@ -279,6 +282,12 @@ declare module 'eris-commando' {
       public run(msg?: CommandMessage): Promise<void>;
     }
     export class Inhibitor {}
+    export class Language {}
+    export class Provider {}
+    export class RethinkDBProvider {}
+    export class MongoDBProvider {}
+    export class PostgresProvider {}
+    export class SQLiteProvider {}
     export type CommandoClientOptions = {
         token: string;
         commands: string,
