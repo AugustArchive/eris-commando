@@ -37,6 +37,11 @@ module.exports = class CommandMessage {
     get collector() {
         return new MessageCollector(this.bot);
     }
+    
+    /** @returns {import('../client').LocaleManager} */
+    get locale() {
+        return this.bot.locales;   
+    }
 
     /**
      * Sends a message to a text channel
