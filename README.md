@@ -11,6 +11,8 @@ $ yarn add eris-commando
 ```
 
 > Indev Branch:
+>
+> :warning: **Don't try this build since it may cause errors; you have been warned!** :warning:
 
 ```sh
 $ npm i github:auguwu/eris-commando#dev
