@@ -191,6 +191,8 @@ declare module 'eris-commando' {
         public on(event: "taskRegistered", listener: (task: Task) => void): this;
         public on(event: "databaseConnected", listener: () => void): this;
         public on(event: "databaseException", listener: (error: DatabaseException) => void): this;
+        public on(event: "inhibitorRegistered", listener: (inbititor: Inhibitor) => void): this;
+        public on(event: "inhibitorAlreadyRegistered", listener: (inbititor: Inhibitor) => void): this;
         //#endregion
     }
     export { CommandoClient as Client }; // Make it you can use { Client } in the import for TypeScript or JSDoc for JavaScript
@@ -262,8 +264,18 @@ declare module 'eris-commando' {
 
       private setup(): void;
     }
-    export class InihibitorManager {}
-    export class LanguageManager {}
+    export class InihibitorManager {
+        constructor(bot: CommandoClient);
+        
+        private setup(): void;
+    }
+    export class LanguageManager {
+        constructor(bot: CommandoClient);
+        
+        public locales: Collection<string, Language>;
+        
+        private setup(): void;
+    }
     export class MessageCollector {
       constructor(bot: CommandoClient);
 
@@ -283,11 +295,20 @@ declare module 'eris-commando' {
     }
     export class Inhibitor {}
     export class Language {}
-    export class Provider {}
+    export class Provider {
+        constructor(bot: CommandoClient);
+    }
     export class RethinkDBProvider {}
     export class MongoDBProvider {}
     export class PostgresProvider {}
     export class SQLiteProvider {}
+    export class ProviderModel {
+        constructor(bot: CommandoClient);
+    }
+    export class CommandoException extends Error {
+        constructor(message: string);
+        public name: string;
+    }
     export type CommandoClientOptions = {
         token: string;
         commands: string,
@@ -330,7 +351,8 @@ declare module 'eris-commando' {
       "voiceChannelJoin" | "voiceChannelLeave" | "voiceChannelSwitch" | "voiceStateUpdate" | "warn" | "debug" |
       "shardDisconnect" | "error" | "shardPreReady" | "connect" | "shardReady" | "shardResume" | "commandRegistered" |
       "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
-      "taskAlreadyRegistered" | "taskRegistered";
+      "taskAlreadyRegistered" | "taskRegistered" | "databaseException" | "databaseConnected" | "inhibitorRegistered" |
+      "inhibitorAlreadyRegistered";
     export type MessageCollectorOptions = {
       channelID: string;
       userID: string;
