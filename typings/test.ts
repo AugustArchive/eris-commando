@@ -4,7 +4,9 @@ import {
     CommandMessage,
     Command,
     Event,
-    Task
+    Task,
+    Inhibitor,
+    RethinkDBProvider
 } from 'eris-commando';
 import { Role, Message } from 'eris';
 
@@ -24,7 +26,8 @@ const client: CommandoClient = new CommandoClient({
         disableEveryone: true,
         autoreconnect: true
     },
-    defaultHelpCommand: false
+    defaultHelpCommand: false,
+    provider: new RethinkDBProvider({ db: 'test', host: '127.0.0.1', port: 28015 })
 });
 
 class MuteTask extends Task {
