@@ -5,7 +5,7 @@
 declare module 'eris-commando' {
     import { 
         Message, Guild, 
-        Client, ClientOptions, 
+        Client as DiscordClient, ClientOptions, 
         EmbedOptions, User, 
         Member, Relationship,
         Call, OldCall,
@@ -17,50 +17,18 @@ declare module 'eris-commando' {
         GuildOptions, Embed,
         Attachment, OldVoiceState,
         VoiceChannel, PossiblyUncachedMessage,
-        UnavailableGuild, RawPacket, Textable
+        UnavailableGuild, RawPacket, 
+        Textable, Collection
     } from 'eris';
 
     export const version: string;
-    export class Collection<K, V> extends Map<K, V> { // Credit: https://github.com/discordjs/discord.js/blob/master/typings/index.d.ts#L277
-        private _array: V[];
-        private _keyArray: K[];
-    
-        public array(): V[];
-        public clone(): Collection<K, V>;
-        public concat(...collections: Collection<K, V>[]): Collection<K, V>;
-        public each(fn: (value: V, key: K, collection: Collection<K, V>) => void, thisArg?: any): Collection<K, V>;
-        public equals(collection: Collection<any, any>): boolean;
-        public every(fn: (value: V, key: K, collection: Collection<K, V>) => boolean, thisArg?: any): boolean;
-        public filter(fn: (value: V, key: K, collection: Collection<K, V>) => boolean, thisArg?: any): Collection<K, V>;
-        public find(fn: (value: V, key: K, collection: Collection<K, V>) => boolean): V;
-        public findKey(fn: (value: V, key: K, collection: Collection<K, V>) => boolean): K;
-        public first(): V | undefined;
-        public first(count: number): V[];
-        public firstKey(): K | undefined;
-        public firstKey(count: number): K[];
-        public keyArray(): K[];
-        public last(): V | undefined;
-        public last(count: number): V[];
-        public lastKey(): K | undefined;
-        public lastKey(count: number): K[];
-        public map<T>(fn: (value: V, key: K, collection: Collection<K, V>) => T, thisArg?: any): T[];
-        public partition(fn: (value: V, key: K, collection: Collection<K, V>) => boolean): [Collection<K, V>, Collection<K, V>];
-        public random(): V | undefined;
-        public random(count: number): V[];
-        public randomKey(): K | undefined;
-        public randomKey(count: number): K[];
-        public reduce<T>(fn: (accumulator: any, value: V, key: K, collection: Collection<K, V>) => T, initialValue?: any): T;
-        public some(fn: (value: V, key: K, collection: Collection<K, V>) => boolean, thisArg?: any): boolean;
-        public sort(compareFunction?: (a: V, b: V, c?: K, d?: K) => number): Collection<K, V>;
-        public sweep(fn: (value: V, key: K, collection: Collection<K, V>) => boolean, thisArg?: any): number;
-        public tap(fn: (collection: Collection<K, V>) => void, thisArg?: any): Collection<K, V>;
-    }
-    export class CommandoClient extends Client {
+    export class CommandoClient extends DiscordClient {
         constructor(options: CommandoClientOptions);
 
-        public manager: CommandManager;
-        public events: EventManager;
-        public tasks: TaskManager;
+        public registry: CommandRegistry;
+        public schedulers: SchedulerRegistry;
+        public inhibitors: InhibitorRegistry;
+        public provider?: Provider;
         public prefix: string;
         public owners: string[];
         public tag: string;
@@ -219,7 +187,7 @@ declare module 'eris-commando' {
 
         public bot: CommandoClient;
         public event: Emittable;
-        public emitter?: CommandoEventEmitter;
+        public emitter: CommandoEventEmitter;
     }
     export class CommandMessage {
         constructor(bot: CommandoClient, msg: Message, args: string[], prefix: string);
@@ -242,37 +210,33 @@ declare module 'eris-commando' {
         constructor(bot: CommandoClient);
 
         public bot: CommandoClient;
-        public commands: Collection<string, Command>;
+        public commands: Collection<Command>;
 
         private setup(): void;
         private handle(msg: Message): void;
-        private registerHelp(): void;
+        private registerHelpCommand(): void;
     }
-    export class EventManager {
-        constructor(bot: CommandoClient);
-
-        public bot: CommandoClient;
-
-        public handle(event: Event): void;
-        private setup(): void;
-    }
-    export class TaskManager {
+    export class SchedulerManager {
       constructor(bot: CommandoClient);
 
       public bot: CommandoClient;
-      public tasks: Collection<string, Task>;
+      public tasks: Collection<Scheduler>;
 
       private setup(): void;
     }
     export class InihibitorManager {
         constructor(bot: CommandoClient);
         
+        public bot: CommandoClient;
+        public inhibitors: Collection<Inhibitor>;
+                                
         private setup(): void;
     }
     export class LanguageManager {
         constructor(bot: CommandoClient);
         
-        public locales: Collection<string, Language>;
+        public bot: CommandoClient;
+        public locales: Collection<Language>;
         
         private setup(): void;
     }
@@ -291,7 +255,7 @@ declare module 'eris-commando' {
       public name: string;
       public interval: number;
 
-      public run(msg?: CommandMessage): Promise<void>;
+      public run(...args: any[]): Promise<void>;
     }
     export class Inhibitor {}
     export class Language {}
@@ -302,7 +266,7 @@ declare module 'eris-commando' {
     export class MongoDBProvider {}
     export class PostgresProvider {}
     export class SQLiteProvider {}
-    export class ProviderModel {
+    export class Provider {
         constructor(bot: CommandoClient);
     }
     export class CommandoException extends Error {
@@ -311,14 +275,19 @@ declare module 'eris-commando' {
     }
     export type CommandoClientOptions = {
         token: string;
-        commands: string,
-        events: string,
+        commands: string;
         prefix: string;
         owner: string[];
         defaultHelpCommand?: boolean;
-        invite: string;
-        options: ClientOptions;
-        tasks: string;
+        invite?: string;
+        options?: ClientOptions;
+        tasks?: string;
+        inhibitors?: string;
+        languages?: {
+            path?: string;
+            locales?: string[];
+            options?: CommandoI18nOptions;
+        };
     };
     export type CommandoEventEmitter = "on" | "once";
     export type CommandMeta = {
@@ -336,7 +305,7 @@ declare module 'eris-commando' {
     };
     export type EventMeta = {
         event: Emittable;
-        emitter?: CommandoEventEmitter;
+        emitter: CommandoEventEmitter;
     };
     export type ExceptionReason = "owner" | "guild" | "nsfw";
     export type Emittable = "ready" | "disconnect" | "callCreate" | "callRing" | "callDelete" |
@@ -358,9 +327,10 @@ declare module 'eris-commando' {
       userID: string;
       timeout?: number;
     };
-    export type TaskMeta = {
+    export type SchedulerMeta = {
       name: string;
       interval: number;
     };
     export type MessageFilter = (msg: Message) => boolean;
+    export type CommandoI18nOptions = {};
 }
