@@ -5,11 +5,11 @@
     "dependencies": {
         "eris": "0.9.0"
     },
-    "peerDependencies": {
-        "rethinkdbdash": "*",
-        "mongoose": "*",
-        "sqlite": "*",
-        "sequelize": "*"
+    "optionalDependencies": {
+        "mongoose": "^5.3.14",
+        "rethinkdbdash": "^2.3.31",
+        "sequelize": "^4.41.2",
+        "sqlite": "^3.0.0"
     },
     "types": "typings/index.d.ts",
     "main": "src/index.js"

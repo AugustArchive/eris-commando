@@ -2,13 +2,15 @@ const { Client } = require('eris');
 const CommandManager = require('./managers/commands');
 const EventManager = require('./managers/events');
 const TaskManager = require('./managers/tasks');
+const LanguageManager = require('./managers/locales');
+const InhibitorManager = require('./managers/inhibitors');
 
 module.exports = class CommandoClient extends Client {
     /**
      * The `CommandoClient` is the start of your discord bot client.
      * 
      *  - All options must be in a [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) or in curly brackets (`{}`)
-     *  - All options are in the types: `Commando.CommandoClientOptions & Eris.ClientOptions`
+     *  - All options are in the types: `Commando.CommandoClientOptions`
      * 
      * @param {CommandoClientOptions} options The options to setup your bot
      */
@@ -74,16 +76,3 @@ module.exports = class CommandoClient extends Client {
         return Date.now() - this.startTime;
     }
 };
-
-/**
- * @typedef {Object} CommandoClientOptions
- * @prop {string} commands The command path
- * @prop {string} events The event path
- * @prop {boolean} [defaultHelpCommand=false] If you want to use the default help command that Eris Commando provides. Default is `false`.
- * @prop {string} prefix The command prefix
- * @prop {string} invite The discord.gg invite if an error occured
- * @prop {string[]} owner The owner array or string
- * @prop {string} token The discord bot token
- * @prop {import('eris').ClientOptions} options The eris client options
- * @prop {string} tasks The tasks path
- */

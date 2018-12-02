@@ -12,7 +12,7 @@ $ yarn add eris-commando
 
 > Indev Branch:
 >
-> :warning: **Don't try this build since it may cause errors; you have been warned!** :warning:
+> :warning: **Don't try this build since it may cause errors.** :warning:
 
 ```sh
 $ npm i github:auguwu/eris-commando#dev
@@ -95,7 +95,7 @@ discord.setup();
 ```
 
 ## Bots that use eris-commando:
-* Noel: Made by August#5820
+* [Noel](https://github.com/auguwu/Noel): made by August#5820 (Verified for new users)
 * [Yokitsu](https://github.com/voided-x/Yokitsu): made by August#5820 and void#0001
 
 Submit a PR to add your bot if you use the library!
