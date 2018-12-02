@@ -22,9 +22,14 @@ declare module 'eris-commando'
     {
         Schema, Connection
     } from 'mongoose';
-    import {
+    import 
+    {
         Sequelize
     } from 'sequelize';
+    import
+    {
+        Modal
+    } from 'rethinkdbdash';
 
     export const version: string;
     export class CommandoClient {
@@ -171,7 +176,6 @@ declare module 'eris-commando'
 
         public bot: CommandoClient;
         //public commands: Collection<Command>;
-        
         protected setup(): void;
         private registerDefaultCommands(): void;
         private handle(msg: Message): void;
@@ -180,7 +184,6 @@ declare module 'eris-commando'
         constructor(bot: CommandoClient);
 
         public bot: CommandoClient;
-
         protected setup(): void;
         private handle(e: Event);
     }
@@ -189,6 +192,30 @@ declare module 'eris-commando'
 
         public bot: CommandoClient;
         // public tasks: Collection<Scheduler>;
+        protected setup(): void;
+    }
+    export class InhibitorRegistry {
+        constructor(bot: CommandoClient);
+
+        public bot: CommandoClient;
+        // public inhibitors: Collection<Inhibitor>;
+        protected setup(): void;
+    }
+    export class LanguageRegistry {
+        constructor(bot: CommandoClient);
+
+        public bot: CommandoClient;
+        // private util: i18nUtil;
+        // public locales: Collection<Language>;
+        protected setup(): void;
+    }
+    export class RethinkDBProvider {
+        constructor(options: ProviderOptions);
+
+        public get(key: string): Modal;
+        public set(key: string, value: any): void;
+        public delete(key: string): void;
+        protected connect(): void;
     }
     export type ExceptionReason = "owner" | "guild" | "nsfw";
     export type Emittable = "ready" | "disconnect" | "callCreate" | "callRing" | "callDelete" |
@@ -205,12 +232,19 @@ declare module 'eris-commando'
         "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
         "taskAlreadyRegistered" | "taskRegistered" | "databaseException" | "databaseConnected" | "inhibitorRegistered" |
         "inhibitorAlreadyRegistered";
+    export type ClientOptions = {};
+    export type ProviderOptions = {
+        host: string;
+        port: string;
+        db?: string;
+        url?: string;
+    };
 }
-/*export class CommandRegistry {}
-export class EventRegistry {}
-export class SchedulerRegistry {}
-export class InhibitorRegistry {}
-export class LanguageRegistry {}
+
+declare module 'rethinkdbdash' {
+    export class Modal {[x: string]: any;}
+}
+/*
 export class RethinkDBProvider {}
 export class MongoDBProvider {}
 export class PostgresSQLProvider {}
