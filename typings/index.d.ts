@@ -1,7 +1,7 @@
-declare module 'eris-commando'
-{
-    import
-    {
+declare module 'eris-commando' {
+    import { Sequelize } from 'sequelize';
+    import { Connection, Schema } from 'mongoose';
+    import {
         Message, Guild,
         Client as DiscordClient, ClientOptions as ErisClientOptions,
         Member, Relationship,
@@ -14,37 +14,24 @@ declare module 'eris-commando'
         Attachment, OldVoiceState,
         VoiceChannel, PossiblyUncachedMessage,
         UnavailableGuild, RawPacket,
-        Textable, Collection,
-        GroupChannel, User,
-        MemberPartial
+        Textable, GroupChannel, 
+        User, MemberPartial
     } from 'eris';
-    import
-    {
-        Schema, Connection
-    } from 'mongoose';
-    import 
-    {
-        Sequelize
-    } from 'sequelize';
-    import
-    {
-        Modal
-    } from 'rethinkdbdash';
 
     export const version: string;
-    export class CommandoClient {
-        constructor(options: ClientOptions);
+    export class CommandoClient extends DiscordClient {
+        constructor(options: CommandoClientOptions);
 
         public registry: CommandRegistry;
         public events?: EventRegistry;
         public schedulers?: SchedulerRegistry;
         public inhibitors?: InhibitorRegistry;
-        public i18n?: LanguageRegistry;
         public tag: string;
         public owners: string[];
         public prefix: string;
         public uptime: number;
-        public setup(): Promise<void>;
+        public start(): Promise<void>;
+        public destroy(reconnect?: boolean): void;
         public owner(userID: string): boolean;
         public on(event: Emittable, listener: Function): this;
         public on(event: "ready" | "disconnect", listener: () => void): this;
@@ -156,67 +143,86 @@ declare module 'eris-commando'
             listener: (err: Error, id: number) => void,
         ): this;
         public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
-        public on(event: "commandRegistered", listener: (command: Command) => void): this;
-        public on(event: "commandCooldown", listener: (msg: CommandMessage, command: Command, left: number) => void): this;
-        public on(event: "commandRun", listener: (command: Command) => void): this;
-        public on(event: "commandError", listener: (command: Command, error: Error, reason?: ExceptionReason) => void): this;
-        public on(event: "commandAlreadyRegistered", listener: (command: Command) => void): this;
-        public on(event: "schedulerAlreadyRegistered", listener: (scheduler: Scheduler) => void): this;
-        public on(event: "schedulerRegistered", listener: (scheduler: Scheduler) => void): this;
-        public on(event: "inhibitorRegistered", listener: (inhibitor: Inhibitor) => void): this;
-        public on(event: "inhibitorAlreadyRegistered", listener: (inhibitor: Inhibitor) => void): this;
-        public on(event: "languageRegistered", listener: (locale: Language) => void): this;
-        public on(event: "languageAlreadyRegistered", listener: (locale: Language) => void): this;
-        public on(event: "providerConnected", listener: () => void): this;
-        public on(event: "providerError", listener: (error: any) => void): this;
     }
-    export { CommandoClient as Client };
     export class CommandRegistry {
         constructor(bot: CommandoClient);
 
+        public commands: Collection<Command>;
         public bot: CommandoClient;
-        //public commands: Collection<Command>;
-        protected setup(): void;
-        private registerDefaultCommands(): void;
-        private handle(msg: Message): void;
+        protected start(): void;
+        public reload(command: Command): boolean;
+        public unload(command: Command): boolean;
+        public load(command: Command): boolean;
     }
     export class EventRegistry {
         constructor(bot: CommandoClient);
 
         public bot: CommandoClient;
-        protected setup(): void;
-        private handle(e: Event);
-    }
-    export class SchedulerRegistry {
-        constructor(bot: CommandoClient);
-
-        public bot: CommandoClient;
-        // public tasks: Collection<Scheduler>;
-        protected setup(): void;
+        protected start(): void;
     }
     export class InhibitorRegistry {
         constructor(bot: CommandoClient);
 
+        public inhibitors: Collection<Inhibitor>;
         public bot: CommandoClient;
-        // public inhibitors: Collection<Inhibitor>;
-        protected setup(): void;
+        protected start(): void;
     }
-    export class LanguageRegistry {
+    export class SchedulerRegistry {
         constructor(bot: CommandoClient);
 
+        public tasks: Collection<Scheduler>;
         public bot: CommandoClient;
-        // private util: i18nUtil;
-        // public locales: Collection<Language>;
-        protected setup(): void;
+        protected start(): void;
     }
-    export class RethinkDBProvider {
-        constructor(options: ProviderOptions);
+    export class Driver {
+        constructor(options: DriverOptions);
+    }
+    export class PostgreSQLDriver extends Driver {
+        constructor(options: PostgreSQLDriverOptions);
 
-        public get(key: string): Modal;
-        public set(key: string, value: any): void;
-        public delete(key: string): void;
+        public uri: string;
+        public db: Sequelize;
         protected connect(): void;
     }
+    export class MongoDBDriver extends Driver {
+        constructor(options: MongoDBDriverOptions);
+
+        public uri: string;
+        public db: Connection;
+        protected connect(): Connection;
+    }
+    export class MessageCollector {}
+    export class Command {}
+    export class Event {}
+    export class Inhibitor {}
+    export class Scheduler {}
+    export class Language {}
+    export class CommandProcessor {}
+    export class EventProcessor {}
+    export class InhibitorProcessor {}
+    export class PermissionProcessor {}
+    export class SchedulerProcessor {}
+    export class Collection<T> extends Map<number | string, T> {
+        public get(key: number | string): T;
+        public set(key: number | string, value: T): this;
+        public delete(key: number | string): boolean;
+        public clone(): Collection<T>;
+        public concat(...col: Collection<T>[]): Collection<T>;
+        public each(fn: (val: T) => boolean): T;
+        public getValues(): T[];
+        public filter(fn: (val: T) => boolean): T;
+        public toJSON(): { [k: string]: any; }
+    }
+    export type DriverOptions = {
+        dialect: "postgres" | "mongodb";
+    }
+    export type PostgreSQLDriverOptions = { uri: string; }
+    export type MongoDBDriverOptions = { uri: string; }
+    export type CommandoClientOptions = {}
+    export type CommandInfo = {}
+    export type EventInfo = {}
+    export type InhibitorInfo = {}
+    export type SchedulerInfo = {}
     export type ExceptionReason = "owner" | "guild" | "nsfw";
     export type Emittable = "ready" | "disconnect" | "callCreate" | "callRing" | "callDelete" |
         "callUpdate" | "channelCreate" | "channelDelete" | "channelPinUpdate" | "channelRecipientAdd" |
@@ -232,34 +238,4 @@ declare module 'eris-commando'
         "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
         "taskAlreadyRegistered" | "taskRegistered" | "databaseException" | "databaseConnected" | "inhibitorRegistered" |
         "inhibitorAlreadyRegistered";
-    export type ClientOptions = {};
-    export type ProviderOptions = {
-        host: string;
-        port: string;
-        db?: string;
-        url?: string;
-    };
 }
-
-declare module 'rethinkdbdash' {
-    export class Modal {[x: string]: any;}
-}
-/*
-export class RethinkDBProvider {}
-export class MongoDBProvider {}
-export class PostgresSQLProvider {}
-export class Command {}
-export class Event {}
-export class Scheduler {}
-export class Inhibitor {}
-export class Language {}
-export class Provider {}
-export type Emittable = '';
-export type EventEmitters = "on" | "once";
-export type ClientOptions = {};
-export type MessageFilter = (msg: Message) => boolean;
-export type CommandInfo = {}
-export type EventInfo = {}
-export type SchedulerInfo = {}
-export type InhibitorOptions = {}
-export type LanguageOptions = {}*/

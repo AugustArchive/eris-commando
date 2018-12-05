@@ -20,78 +20,54 @@ $ npm i github:auguwu/eris-commando#dev
 $ yarn add github:auguwu/eris-commando#dev
 ```
 
-## Examples
-> If you're just starting bot development, I advise you to set the `defaultHelpCommand` option enabled.
+## Drivers
+> The avaliable drivers are `postgres` and `mongodb`.
 >
-> Creating a command
+> To add an driver:
+
+```js
+const { CommandoClient, PostgreSQLDriver } = require('eris-commando'); // Were gonna use Postgres for this
+
+const client = new CommandoClient({
+    token,
+    prefix: '!',
+    commands: './commands',
+    events: './events',
+    drivers: {
+        dialect: new PostgreSQLDriver({ uri: '<uri>' })
+    }
+});
+
+client.start();
+```
+
+> Adding a table to Postgres (Command style)
 
 ```js
 const { Command } = require('eris-commando');
 
-module.exports = class MyCommand extends Command {
-    constructor(bot) {
-        super(bot, {
-            command: 'test',
-            description: 'A debug testing command, what did you expect?',
-            usage: 'test [...args]',
-            category: 'Test',
-            aliases: ['debug'],
-            hidden: false,
-            owner: false,
-            guild: true,
-            disabled: false
-        });
-    }
-
-    async run(msg) {
+module.exports = new Command({
+    name: 'db',
+    description: 'Database driver example',
+    usage: '<subcommand:string>',
+    checks: {
+        guild: false,
+        owner: true,
+        hidden: true,
+        disabled: false
+    },
+    run: (bot, msg) => {
         if (!msg.args[0])
-            return msg.reply("No content to respond?");
-        else {
-            const argStr = msg.args.slice(0).join(" ");
-            return msg.code('ini', `#${argStr}`);
+            return msg.reply('Invalid subcommand. (`set` | `get`)');
+
+        if (msg.args[0].toLowerCase() === 'set') {
+            bot
+                .driver // Postgres
+                .db // Sequelize
+                .create() 
         }
     }
-};
-```
-
-> Using an event
-
-```js
-const { Event } = require('eris-commando');
-
-module.exports = class ReadyEvent extends Event {
-    constructor(bot) {
-        super(bot, { event: 'ready', emitter: 'on' });
-    }
-
-    run() {
-        console.log('I\'m online!');
-    }
-};
-```
-
-> Creating the CommandoClient and setting up!
-
-```js
-const { CommandoClient } = require('eris-commando');
-const path = require('path');
-
-const discord = new CommandoClient({
-    token: '',
-    commands: path.join(__dirname, 'commands'),
-    events: path.join(__dirname, 'events'),
-    groupCommands: true,
-    prefix: '!',
-    owner: ['280158289667555328'],
-    defaultHelpCommand: true,
-    invite: 'https://discord.gg/some_invite',
-    options: {
-        maxShards: 'auto',
-        disableEveryone: true,
-        autoreconnect: true
-    }
 });
-discord.setup();
 ```
 
 ## Bots that use eris-commando:
