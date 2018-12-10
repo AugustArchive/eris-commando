@@ -1,9 +1,7 @@
 declare module 'eris-commando' {
-    import { Sequelize } from 'sequelize';
-    import { Connection, Schema } from 'mongoose';
     import {
         Message, Guild,
-        Client as DiscordClient, ClientOptions as ErisClientOptions,
+        Client as DiscordClient, ClientOptions,
         Member, Relationship,
         Call, OldCall,
         OldPresence, TextableChannel,
@@ -15,21 +13,22 @@ declare module 'eris-commando' {
         VoiceChannel, PossiblyUncachedMessage,
         UnavailableGuild, RawPacket,
         Textable, GroupChannel, 
-        User, MemberPartial
+        User, MemberPartial,
+        EmbedOptions
     } from 'eris';
 
     export const version: string;
+    
     export class CommandoClient extends DiscordClient {
         constructor(options: CommandoClientOptions);
 
         public registry: CommandRegistry;
-        public events?: EventRegistry;
+        public events: EventRegistry;
         public schedulers?: SchedulerRegistry;
         public inhibitors?: InhibitorRegistry;
         public tag: string;
         public owners: string[];
         public prefix: string;
-        public uptime: number;
         public start(): Promise<void>;
         public destroy(reconnect?: boolean): void;
         public owner(userID: string): boolean;
@@ -52,30 +51,15 @@ declare module 'eris-commando' {
             event: "channelRecipientAdd" | "channelRecipientRemove",
             listener: (channel: GroupChannel, user: User) => void,
         ): this;
-        public on(
-            event: "channelUpdate",
-            listener: (
-                channel: AnyChannel,
-                oldChannel: OldChannel,
-            ) => void,
-        ): this;
-        public on(
-            event: "friendSuggestionCreate",
-            listener: (user: User, reasons: FriendSuggestionReasons) => void,
-        ): this;
+        public on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+        public on(event: "friendSuggestionCreate",listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
         public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-        public on(
-            event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-            listener: (guild: Guild, user: User) => void,
-        ): this;
+        public on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
         public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
         public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
         public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
         public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-        public on(
-            event: "guildMemberRemove",
-            listener: (guild: Guild, member: Member | MemberPartial) => void,
-        ): this;
+        public on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
         public on(
             event: "guildMemberUpdate",
             listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
@@ -144,86 +128,210 @@ declare module 'eris-commando' {
         ): this;
         public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
     }
+
+    export { CommandoClient as Client };
+
     export class CommandRegistry {
-        constructor(bot: CommandoClient);
+        constructor(client: CommandoClient);
 
         public commands: Collection<Command>;
-        public bot: CommandoClient;
+        public client: CommandoClient;
+        private processor: CommandProcessor;
         protected start(): void;
-        public reload(command: Command): boolean;
-        public unload(command: Command): boolean;
-        public load(command: Command): boolean;
     }
-    export class EventRegistry {
-        constructor(bot: CommandoClient);
 
-        public bot: CommandoClient;
+    export class EventRegistry {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        private processor: EventProcessor;
         protected start(): void;
     }
+
     export class InhibitorRegistry {
-        constructor(bot: CommandoClient);
+        constructor(client: CommandoClient);
 
         public inhibitors: Collection<Inhibitor>;
-        public bot: CommandoClient;
+        public client: CommandoClient;
+        private processor: InhibitorProcessor;
         protected start(): void;
     }
+
     export class SchedulerRegistry {
-        constructor(bot: CommandoClient);
+        constructor(client: CommandoClient);
 
         public tasks: Collection<Scheduler>;
-        public bot: CommandoClient;
+        public client: CommandoClient;
+        private processor: SchedulerProcessor;
         protected start(): void;
     }
-    export class Driver {
-        constructor(options: DriverOptions);
-    }
-    export class PostgreSQLDriver extends Driver {
-        constructor(options: PostgreSQLDriverOptions);
 
-        public uri: string;
-        public db: Sequelize;
-        protected connect(): void;
-    }
-    export class MongoDBDriver extends Driver {
-        constructor(options: MongoDBDriverOptions);
+    export class MessageCollector {
+        constructor(client: CommandoClient);
 
-        public uri: string;
-        public db: Connection;
-        protected connect(): Connection;
+        public collectors: {
+            filter: MessageFilter;
+            accept: Promise<any>;
+        }
+        public client: CommandoClient;
+        public verify(msg: Message): void;
+        public awaitMessages(filter: MessageFilter, options: { channelID: string; userID: string; timeout?: number; }): Promise<Message>;
     }
-    export class MessageCollector {}
-    export class Command {}
-    export class Event {}
-    export class Inhibitor {}
-    export class Scheduler {}
-    export class Language {}
-    export class CommandProcessor {}
-    export class EventProcessor {}
-    export class InhibitorProcessor {}
-    export class PermissionProcessor {}
-    export class SchedulerProcessor {}
+
+    export class Command {
+        constructor(info: CommandInfo);
+
+        public command: string;
+        public description: string | DescriptionProvider;
+        public usage?: string;
+        public category?: string;
+        public aliases?: string[];
+        public checks?: {
+            hidden?: boolean;
+            owner?: boolean;
+            guild?: boolean;
+            nsfw?: boolean;
+            enabled?: boolean;
+        };
+        public ratelimit?: number;
+        public execute(client: CommandoClient, msg: CommandMessage): Promise<void>;
+    }
+
+    export class Event {
+        constructor(info: EventInfo);
+
+        public event: Emittable;
+        public emitter: "on" | "once";
+    }
+
+    export class Inhibitor {
+        constructor(info: InhibitorInfo);
+
+        public name: string;
+    }
+
+    export class Scheduler {
+        constructor(info: SchedulerInfo);
+
+        public name: string;
+        public interval: number;
+    }
+
+    export class CommandProcessor {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        protected process(msg: Message): void;
+    }
+
+    export class EventProcessor {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        protected process(event: Event): void;
+    }
+
+    export class InhibitorProcessor {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        protected process(): void;
+    }
+
+    export class SchedulerProcessor {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        protected process(task: Scheduler): void;
+    }
+
+    export class RatelimitProcessor {
+        constructor(client: CommandoClient);
+
+        public client: CommandoClient;
+        public ratelimits: Collection<Collection<number>>;
+        protected process(msg: CommandMessage): void;
+    }
+
+    export class CommandMessage {
+        constructor(client: CommandoClient, msg: Message, args: string[]);
+
+        public client: CommandoClient;
+        public message: Message;
+        public args: string[];
+        public reply(content: string): Promise<Message>;
+        public embed(content: EmbedOptions): Promise<Message>;
+        public codeblock(lang: string, content: string): Promise<Message>;
+    }
+
     export class Collection<T> extends Map<number | string, T> {
         public get(key: number | string): T;
         public set(key: number | string, value: T): this;
         public delete(key: number | string): boolean;
         public clone(): Collection<T>;
         public concat(...col: Collection<T>[]): Collection<T>;
-        public each(fn: (val: T) => boolean): T;
-        public getValues(): T[];
         public filter(fn: (val: T) => boolean): T;
-        public toJSON(): { [k: string]: any; }
     }
-    export type DriverOptions = {
-        dialect: "postgres" | "mongodb";
+
+    export class RESTClient {}
+
+    export type CommandoClientOptions = {
+        token: string;
+        prefix: string;
+        commands: string;
+        events: string;
+        inhibitors?: {
+            enabled?: boolean;
+            path?: string;
+        };
+        schedulers?: {
+            enabled?: boolean;
+            path?: string;
+        };
+        useDefaultCommands?: boolean;
+        clientOptions: ClientOptions;
     }
-    export type PostgreSQLDriverOptions = { uri: string; }
-    export type MongoDBDriverOptions = { uri: string; }
-    export type CommandoClientOptions = {}
-    export type CommandInfo = {}
-    export type EventInfo = {}
-    export type InhibitorInfo = {}
-    export type SchedulerInfo = {}
+
+    export type CommandInfo = {
+        command: string;
+        description: string | DescriptionProvider;
+        usage?: string;
+        aliases?: string[];
+        category?: string;
+        checks?: {
+            hidden?: boolean;
+            owner?: boolean;
+            guild?: boolean;
+            nsfw?: boolean;
+            enabled?: boolean;
+        };
+        ratelimit?: number;
+        run: (client: CommandoClient, message: CommandMessage) => Promise<void>;
+    }
+
+    export type EventInfo = {
+        event: Emittable;
+        emitter: "on" | "once";
+        run: (client: CommandoClient, ...args: any[]) => Promise<void>;
+    }
+
+    export type InhibitorInfo = {
+        name: string;
+        run: (client: CommandoClient) => Promise<void>;
+    }
+
+    export type SchedulerInfo = {
+        name: string;
+        interval: number;
+        run: (client: CommandoClient) => Promise<void>;
+    }
+
+    export type MessageFilter = (msg: Message) => boolean;
+
+    export type DescriptionProvider = (client: CommandoClient) => string;
+
     export type ExceptionReason = "owner" | "guild" | "nsfw";
+
     export type Emittable = "ready" | "disconnect" | "callCreate" | "callRing" | "callDelete" |
         "callUpdate" | "channelCreate" | "channelDelete" | "channelPinUpdate" | "channelRecipientAdd" |
         "channelRecepientRemove" | "channelUpdate" | "friendSuggestionCreate" | "friendSuggestionDelete" |
@@ -234,8 +342,5 @@ declare module 'eris-commando' {
         "messageReactionRemove" | "messageUpdate" | "presenceUpdate" | "rawWS" | "unknown" | "relationshipAdd" | 
         "relationshipRemove" | "relationshipUpdate" | "typingStart" | "unavaliableGuildCreate" | "userUpdate" |
         "voiceChannelJoin" | "voiceChannelLeave" | "voiceChannelSwitch" | "voiceStateUpdate" | "warn" | "debug" |
-        "shardDisconnect" | "error" | "shardPreReady" | "connect" | "shardReady" | "shardResume" | "commandRegistered" |
-        "commandCooldown" | "commandRun" | "commandError" | "commandAlreadyRegistered" | "commandException" |
-        "taskAlreadyRegistered" | "taskRegistered" | "databaseException" | "databaseConnected" | "inhibitorRegistered" |
-        "inhibitorAlreadyRegistered";
+        "shardDisconnect" | "error" | "shardPreReady" | "connect" | "shardReady" | "shardResume";
 }
