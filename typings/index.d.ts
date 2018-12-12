@@ -288,7 +288,10 @@ declare module 'eris-commando' {
             enabled?: boolean;
             path?: string;
         };
-        useDefaultCommands?: boolean;
+        useDefaultCommands?: {
+            help?: boolean;
+            ping?: boolean;
+        };
         clientOptions: ClientOptions;
     }
 
