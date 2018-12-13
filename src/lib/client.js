@@ -1,7 +1,6 @@
 const { Client }        = require('eris');
 const CommandRegistry   = require('./registry/commands');
 const EventRegistry     = require('./registry/events');
-const InhibitorRegistry = require('./registry/inhibitors');
 const SchedulerRegistry = require('./registry/schedulers');
 const RESTClient        = require('./util/rest');
 
@@ -12,13 +11,10 @@ module.exports = class CommandoClient extends Client {
      * @param {CommandoClientOptions} options The commando client options
      */
     constructor(options) {
-        super(options.token, options.clientOptions);
+        super(options.token, options.clientOptions || {});
 
         this.registry = new CommandRegistry(this);
         this.events = new EventRegistry(this);
-
-        if (options.inhibitors.enabled)
-            this.inhibitors = new InhibitorRegistry(this);
 
         if (options.schedulers.enabled)
             this.schedulers = new SchedulerRegistry(this);
@@ -26,6 +22,29 @@ module.exports = class CommandoClient extends Client {
         this.prefix = options.prefix || "!";
         this.owners = options.owners;
         this.clientOptions = options;
+        this.inhibitors = new Set();
+        this.rest = new RESTClient(this);
+    }
+
+    async start() {
+        this.registry.start();
+        this.events.start();
+
+        if (options.schedulers.enabled)
+            this.schedulers.start();
+
+        super.connect();
+    }
+
+    addInhibitor(fn) {
+        if (typeof fn !== 'function')
+            throw new TypeError("CommandoClient.addInhibitor(fn: (msg: Eris.Message) => void): boolean -> \"fn\" was not a function.");
+
+        if (this.inhibitors.has(fn))
+            return false;
+
+        this.inhibitors.add(fn);
+        return true;
     }
 
     get tag() {
