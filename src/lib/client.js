@@ -47,6 +47,8 @@ module.exports = class CommandoClient extends Client {
         return true;
     }
 
+    destroy(reconnect) { return this.disconnect({ reconnect }); }
+
     get tag() {
         return `${this.user.username}#${this.user.discriminator}`;
     }

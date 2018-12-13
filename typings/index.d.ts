@@ -29,7 +29,7 @@ declare module 'eris-commando' {
         public inhibitors: Set<Function>;
         public tag: string;
         public owners: string[];
-        public prefix: string | string[] | PrefixSupplier;
+        public prefix: string[] | PrefixSupplier;
         public start(): Promise<void>;
         public destroy(reconnect?: boolean): void;
         public owner(userID: string): boolean;
@@ -83,6 +83,7 @@ declare module 'eris-commando' {
         constructor(client: CommandoClient);
 
         public commands: Collection<Command>;
+        public types: Collection<ArgumentType>;
         public readonly client: CommandoClient;
         private processor: CommandProcessor;
         protected start(): void;
@@ -119,15 +120,15 @@ declare module 'eris-commando' {
 
         public command: string;
         public description: string | DescriptionProvider;
-        public usage?: string;
-        public category?: string;
-        public aliases?: string[];
-        public checks?: {
-            hidden?: boolean;
-            owner?: boolean;
-            guild?: boolean;
-            nsfw?: boolean;
-            enabled?: boolean;
+        public usage: string;
+        public category: string;
+        public aliases: string[];
+        public checks: {
+            hidden: boolean;
+            owner: boolean;
+            guild: boolean;
+            nsfw: boolean;
+            enabled: boolean;
         };
         public node: string;
         public execute(client: CommandoClient, msg: CommandMessage): Promise<void>;
@@ -161,13 +162,6 @@ declare module 'eris-commando' {
         protected process(event: Event): void;
     }
 
-    export class InhibitorProcessor {
-        constructor(client: CommandoClient);
-
-        public readonly client: CommandoClient;
-        protected process(): void;
-    }
-
     export class SchedulerProcessor {
         constructor(client: CommandoClient);
 
@@ -196,7 +190,8 @@ declare module 'eris-commando' {
         public delete(key: number | string): boolean;
         public clone(): Collection<T>;
         public concat(...col: Collection<T>[]): T;
-        public filter(fn: (val: T) => boolean): T;
+        public filter(fn: (val: T) => boolean): T[];
+        public map(fn: (val: T) => boolean): T[];
     }
 
     export class RESTClient {
@@ -214,11 +209,59 @@ declare module 'eris-commando' {
         public static isFunction(thing: any): boolean;
     }
 
+    export class Argument {
+        constructor(client: CommandoClient, info: ArgumentInfo);
+
+        public key: string;
+        public label: string;
+        public prompt: {
+            start: string;
+            retry: string;
+        };
+        public type: string;
+        public default: any | Function;
+        public oneOf: any[];
+        public max: number;
+        public min: number;
+        public infinite: boolean;
+        public validate: Function;
+        public parse: Function;
+        public isEmpty: Function;
+        public timer: number;
+        public readonly client: CommandoClient;
+        public readonly collector: MessageCollector;
+
+        private async obtain(msg: CommandMessage, value: string, promptLimit: number): Promise<ArgumentResults>;
+        private async obtainInfinite(msg: CommandMessage, values: string[], promptLimit?: number): Promise<ArgumentInfo>;
+        public parse(msg: CommandMessage, value: string): any | Promise<any>;
+        public validate(msg: CommandMessage, value: string): any;
+    }
+
+    export class ArgumentCollector {
+        constructor(client: CommandoClient, args: Argument[], promptLimit?: number);
+
+        public args: Argument[];
+        public readonly client: CommandoClient;
+        public promptLimit: number;
+        private async obtain(msg: CommandMessage, provided?: string[]): Promise<ArgumentCollectorResults>;
+    }
+
+    export class ArgumentType {
+        constructor(client: CommandoClient, id: string);
+
+        public readonly client: CommandoClient;
+        public id: string;
+        public validate(msg: CommandMessage, val: string, arg: Argument): boolean | string | Promise<boolean | string>;
+        public parse(msg: CommandMessage, val: string, arg: Argument): any | Promise<any>;
+        public isEmpty(msg: CommandMessage, val: string, arg: Argument): boolean;
+    };
+
     export type CommandoClientOptions = {
         token: string;
-        prefix: string | PrefixSupplier | string[];
+        prefix: PrefixSupplier | string[];
         commands: string;
         events: string;
+        types?: string;
         schedulers?: {
             enabled?: boolean;
             path?: string;
@@ -227,7 +270,7 @@ declare module 'eris-commando' {
             help?: boolean;
             ping?: boolean;
         };
-        clientOptions: ClientOptions;
+        clientOptions?: ClientOptions;
     }
 
     export type CommandInfo = {
@@ -283,4 +326,37 @@ declare module 'eris-commando' {
     };
 
     export type PrefixSupplier = (message: Message) => string;
+
+    export type ArgumentInfo = {
+        key: string;
+        label?: string;
+        prompt?: {
+            start?: string;
+            retry?: string;
+        };
+        type?: string;
+        default?: any | Function;
+        oneOf?: any[];
+        max?: number;
+        min?: number;
+        infinite?: boolean;
+        validate?: Function;
+        parse?: Function;
+        isEmpty?: Function;
+        timer?: number;
+    };
+
+    export type ArgumentResults = {
+        value: any | any[];
+        cancelled?: string;
+        results: Message[];
+        answers: Message[];
+    };
+
+    export type ArgumentCollectorResults = {
+        value: object;
+        cancelled?: string;
+        results: Message[];
+        answers: Message[];
+    };
 }

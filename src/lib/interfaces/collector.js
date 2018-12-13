@@ -22,4 +22,14 @@ module.exports = class MessageCollector {
         if (collector && collector.filter(msg))
             collector.accept(msg);
     }
+
+    async awaitMessages(filter, { channelID, userID, timeout }) {
+        return new Promise((accept) => {
+            if (this.collectors[channelID + userID])
+                delete this.collectors[channelID + userID];
+
+            this.collectors[channelID + userID] = { filter, accept };
+            setTimeout(accept.bind(null, false), timeout);
+        });
+    }
 }
