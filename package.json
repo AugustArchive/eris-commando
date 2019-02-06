@@ -1,11 +1,14 @@
 {
     "name": "eris-commando",
-    "description": "A command router for the Eris library.",
+    "description": "📝 Command router for the Eris library",
     "version": "0.4.0",
+    "main": "lib/index.js",
+    "typings": "index.d.ts",
     "dependencies": {
-        "eris": "0.9.0",
-        "common-tags": "1.8.0"
+        "eris": "0.9.0"
     },
-    "types": "typings/index.d.ts",
-    "main": "src/index.js"
+    "devDependencies": {
+        "@types/node": "10.12.21",
+        "typescript": "3.3.1"
+    }
 }
