@@ -1,7 +1,7 @@
 <h1 align="center">eris-commando</h1>
 
 ---------------
-`eris-commando` is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
+[`eris-commando`](https://auguwu.github.io/eris-commando) is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
 ## Features
 
@@ -18,34 +18,12 @@
 - Subcommands
   - Want to add subcommands like `<prefix>commandName <subcommandName>`? Now you can!
 - Presets
-  - Ability to append stuff to `this.client`
+  - Ability to add presets and append them to the client
+- Arguments
+  - Parseable arguments to depend of what the argument is
+  - Same as discord.js-commando's but more different!
 
 and more to come~
-
-### Presets to NPM
-
-> You can append presets into NPM if you're a contributor. All preset names are belonged to `@eris-commando/<name>`!
-
-```js
-const { Preset } = require('eris-commando');
-
-module.exports = class MyPreset extends Preset
-{
-    constructor(client) {
-        super(client, {
-            name: 'logger',
-            description: 'Logger preset to log stuff!'
-        });
-    }
-    
-    run(...args) {
-        process.stdout.write(`yes\n`);
-        return this.client;
-    }
-}
-
-this.client.logger.info(); // => Commando.Client
-```
 
 ## Installation
 
