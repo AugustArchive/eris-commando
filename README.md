@@ -17,8 +17,35 @@
   - Comes with default commands like `help`, `ping`, `reload`, `unload`, `load`, `disable`, `enable`, and `groups`!
 - Subcommands
   - Want to add subcommands like `<prefix>commandName <subcommandName>`? Now you can!
+- Presets
+  - Ability to append stuff to `this.client`
 
 and more to come~
+
+### Presets to NPM
+
+> You can append presets into NPM if you're a contributor. All preset names are belonged to `@eris-commando/<name>`!
+
+```js
+const { Preset } = require('eris-commando');
+
+module.exports = class MyPreset extends Preset
+{
+    constructor(client) {
+        super(client, {
+            name: 'logger',
+            description: 'Logger preset to log stuff!'
+        });
+    }
+    
+    run(...args) {
+        process.stdout.write(`yes\n`);
+        return this.client;
+    }
+}
+
+this.client.logger.info(); // => Commando.Client
+```
 
 ## Installation
 
