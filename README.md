@@ -72,6 +72,6 @@ client.start();
 
 ## Bots that use eris-commando:
 
-- This can be your bot **~** Created by you!
+- [Yamashiro](https://shipgirl.augu.me) **~** Created by auguwu
 
-> If you use `eris-commando`, submit a pull request
+> If you use `eris-commando`, submit a pull request and submit your bot!
