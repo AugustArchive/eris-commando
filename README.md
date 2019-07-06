@@ -1,7 +1,7 @@
 <h1 align="center">eris-commando</h1>
 
 ---------------
-`eris-commando` is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
+> eris-commando is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
 ## Features
 
@@ -9,14 +9,10 @@
   - Ablilty to execute stuff after command execution
 - Schedulers
   - Ability to be alert anything by a task running at an interval
-- Languages
-  - Ability to make locales for all languages with JavaScript Object Notation (JSON)
-- Flags
-  - Parsable flags
-- Default Commands
-  - Comes with default commands like `help`, `ping`, `reload`, `unload`, `load`, `disable`, `enable`, and `groups`!
+- Presets
+  - Ability to add presets and append them to the client
 - Subcommands
-  - Want to add subcommands like `<prefix>commandName <subcommandName>`? Now you can!
+  - Parsable subcommands to execute while running the parent command
 
 and more to come~
 
@@ -72,6 +68,6 @@ client.start();
 
 ## Bots that use eris-commando:
 
-- [Yamashiro](https://shipgirl.augu.me) **~** Created by auguwu
+- This can be your bot **~** Created by you!
 
-> If you use `eris-commando`, submit a pull request and submit your bot!
+> If you use `eris-commando`, submit a pull request
