@@ -18,11 +18,10 @@
     "devDependencies": {
         "@types/mongoose": "5.5.7",
         "@types/node": "12.0.10",
-        "typescript": "3.5.2",
-        "yotsuba": "0.0.3"
+        "typescript": "3.5.3",
+        "yotsuba": "0.0.6"
     },
     "scripts": {
-        "test": "cd test && node bot.js",
         "automation": "node Yotsuba.js"
     }
 }

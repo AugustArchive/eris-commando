@@ -1,5 +1,6 @@
 import NoFunctionalityException from '../errors/NoFunctionalityException';
 import CommandoClient from '../CommandoClient';
+import CommandContext from './Context';
 
 export interface CommandInfo {
     name: string;
@@ -13,13 +14,6 @@ export interface CommandInfo {
     hidden?: boolean;
     disabled?: boolean;
     throttle?: number;
-    subcommands?: Subcommand[];
-}
-
-export interface Subcommand {
-    name: string;
-    description: string | ((client: CommandoClient) => string);
-    run: (client: CommandoClient, ctx: any) => Promise<any>;
 }
 
 export default class Command {
@@ -35,7 +29,6 @@ export default class Command {
     public hidden: boolean;
     public disabled: boolean;
     public throttle: number;
-    public subcommands: Subcommand[];
 
     constructor(client: CommandoClient, info: CommandInfo) {
         this.client      = client;
@@ -50,18 +43,13 @@ export default class Command {
         this.hidden      = info.hidden || false;
         this.disabled    = info.disabled || false;
         this.throttle    = info.throttle || 5;
-        this.subcommands = info.subcommands || [];
     }
 
-    async run(ctx: any) {
+    async run(ctx: CommandContext) {
         throw new NoFunctionalityException(`Command "${this.name}" has no functionality`);
     }
 
     format() {
-        const usage = (() => {
-            const subcommands = this.subcommands.length > 1? this.subcommands.map(s => s.name).join(', '): '';
-            return `${this.usage}${subcommands}`;
-        });
-        return `${this.client.commandPrefix}${this.name}${usage()}`;
+        return `${this.client.commandPrefix}${this.name}${this.usage? ` ${this.usage}`: ''}`;
     }
 }

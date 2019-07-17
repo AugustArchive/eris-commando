@@ -29,13 +29,13 @@ export interface EmbedImage {
 }
 
 export interface EmbedField {
-    name: string;
-    value: string;
+    name?: string;
+    value?: string;
     inline?: boolean;
 }
 
 export interface EmbedFooter {
-    text: string;
+    text?: string;
     icon_url?: string;
 }
 

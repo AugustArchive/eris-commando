@@ -45,6 +45,11 @@ async-limiter@~1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
   integrity sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
 
+common-tags@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/common-tags/-/common-tags-1.8.0.tgz#8e3153e542d4a39e9b10554434afaaf98956a937"
+  integrity sha512-6P6g0uetGpW/sdyUy/iQQCbFF0kWVMSIVSyYz7Zgjcgh8mgw8PQzDNZeyZ5DQ2gM7LBoZPHmnjz8rUthkBG5tw==
+
 eris@0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/eris/-/eris-0.10.0.tgz#cfc3ba5721fe3c116e4f3dac5a2bb07b00ff7558"
@@ -65,10 +70,10 @@ tweetnacl@^1.0.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.0.tgz#713d8b818da42068740bf68386d0479e66fc8a7b"
   integrity sha1-cT2LgY2kIGh0C/aDhtBHnmb8ins=
 
-typescript@3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.2.tgz#a09e1dc69bc9551cadf17dba10ee42cf55e5d56c"
-  integrity sha512-7KxJovlYhTX5RaRbUdkAXN1KUZ8PwWlTzQdHV6xNqvuFOs7+WBo10TQUqT19Q/Jz2hk5v9TQDIhyLhhJY4p5AA==
+typescript@3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 ws@^6.0.0:
   version "6.1.2"
@@ -77,9 +82,10 @@ ws@^6.0.0:
   dependencies:
     async-limiter "~1.0.0"
 
-yotsuba@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/yotsuba/-/yotsuba-0.0.3.tgz#ac82e1aeaa998fc1c3f0a10695f3875250149f13"
-  integrity sha512-Znx6feJer0mSDoEbcxzAGmpjPi6A57sEGfa+L33bx8xfxPCSlmVQ0R+97RCF2cnJdA5FSQCIl//f6ZZm8iOa5w==
+yotsuba@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/yotsuba/-/yotsuba-0.0.6.tgz#95fe980257bb144df37f27f491232e9b520fdf1d"
+  integrity sha512-FCjEjapdZ87Xxyz3r8ioOMBuZ5WvqO8kOgrGy+s1BWdiIkPYqg/s8RW1+XsR1YCs14xOUqMpJuxBzoEveb593w==
   dependencies:
     "@augu/immutable" "0.0.1"
+    common-tags "1.8.0"

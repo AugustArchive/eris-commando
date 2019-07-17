@@ -3,19 +3,6 @@
 ---------------
 > eris-commando is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
 
-## Features
-
-- Inhibitors
-  - Ablilty to execute stuff after command execution
-- Schedulers
-  - Ability to be alert anything by a task running at an interval
-- Presets
-  - Ability to add presets and append them to the client
-- Subcommands
-  - Parsable subcommands to execute while running the parent command
-
-and more to come~
-
 ## Installation
 
 > Master Branch:
@@ -39,30 +26,25 @@ $ yarn add github:auguwu/eris-commando#dev
 ## Example Bot
 
 ```js
-const { Client } = require('eris-commando');
-const { join } = require('path');
+const { CommandoClient, MongoDialect, LoggerPreset } = require('eris-commando');
+const { resolve } = require('path');
 
-const client = new Client({
+const client = new CommandoClient({
     token: 'TOKEN',
     prefix: '!',
-    events: join(__dirname, 'events'),
-    schedulers: {
-        enabled: false
-    },
-    localization: {
+    commands: resolve(__dirname, 'commands'),
+    events: resolve(__dirname, 'events'),
+    dialect: new MongoDialect('mongodb://localhost:27017'),
+    tasks: {
         enabled: false
     },
     inhibitors: {
         enabled: true,
-        path: join(__dirname, 'inhibitors')
+        path: resolve(__dirname, 'inhibitors')
     }
 });
 
-client
-    .manager
-    .registerCommandsIn(join(__dirname, 'commands'))
-    .registerDefaults();
-
+client.use(new LoggerPreset());
 client.start();
 ```
 

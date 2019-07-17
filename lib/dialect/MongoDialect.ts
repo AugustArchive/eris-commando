@@ -15,11 +15,11 @@ export default class MongoDialect extends Dialect {
         connection.on('error', e => e);
     }
 
-    disconnect(onCallback: (success: boolean, error: Error | null) => void) {
+    disconnect(cb: (success: boolean, error: Error | null) => void) {
         try {
-            m.disconnect(() => onCallback(true, null));
+            m.disconnect(() => cb(true, null));
         } catch(ex) {
-            onCallback(false, ex);
+            cb(false, ex);
         }
     }
 }

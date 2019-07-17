@@ -1,16 +1,11 @@
 import { Model, Document, Schema, model as __model__ } from 'mongoose';
+import Repository, { UpdateOne } from '../../entities/Repository';
 
-export interface MongoUpdateOne {
-    column: string;
-    id: string;
-    doc: { [x: string]: string }
-    onCallback: (error?: any) => void;
-}
-export default class MongoRepository<T extends Document> {
+export default class MongoRepository<T extends Document> implements Repository<T> {
     public model: Model<T, {}>;
 
     constructor(name: string, schema: Schema) {
-        this.model = __model__(name, schema);
+        this.model = __model__(name, schema, name);
     }
 
     async get(column: string, id: string): Promise<T | null> {
@@ -19,8 +14,8 @@ export default class MongoRepository<T extends Document> {
         else return model;
     }
 
-    async create(column: string, id: string): Promise<T> {
-        const query = new this.model({ [column]: id });
+    create(column: string, id: string, ...values: any[]): T {
+        const query = new this.model({ [column]: id, ...values });
         query.save();
         return query;
     }
@@ -29,7 +24,7 @@ export default class MongoRepository<T extends Document> {
         return this.model.findOne({ [column]: id }).remove().exec();
     }
 
-    updateOne(info: MongoUpdateOne) {
+    update(info: UpdateOne) {
         return this.model.updateOne({ [info.column]: info.id }, info.doc, (error: any) => {
             if (error) info.onCallback(error);
             info.onCallback(null);
