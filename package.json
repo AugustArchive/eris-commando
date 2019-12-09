@@ -1,10 +1,27 @@
 {
     "name": "eris-commando",
-    "description": "A command router for the Eris library.",
-    "version": "0.3.1",
-    "dependencies": {
-        "eris": "0.9.0"
+    "description": "📝 Command router for the Eris library",
+    "version": "0.4.0",
+    "main": "lib/index.js",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/auguwu/eris-commando"
     },
-    "types": "typings/index.d.ts",
-    "main": "src/index.js"
+    "dependencies": {
+        "@augu/immutable": "0.0.1",
+        "eris": "0.10.0"
+    },
+    "peerDependencies": {
+        "mongoose": "5.6.3"
+    },
+    "devDependencies": {
+        "@types/mongoose": "5.5.7",
+        "@types/node": "12.0.10",
+        "typescript": "3.5.3",
+        "yotsuba": "0.0.6"
+    },
+    "scripts": {
+        "automation": "node Yotsuba.js"
+    }
 }

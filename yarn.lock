@@ -2,13 +2,58 @@
 # yarn lockfile v1
 
 
+"@augu/immutable@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@augu/immutable/-/immutable-0.0.1.tgz#78db3c49fb0db440292da538d4f9290708e81e8b"
+  integrity sha512-supk62fCnRMzSg/Dv0r2lrYQyLzWZmHepqtMku91Bw1PaNjCh0TYNkPFd2CkKM4PU/Yhmag5Wpoxd2EgEnHeIg==
+
+"@types/bson@*":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.0.tgz#9073772679d749116eb1dfca56f8eaac6d59cc7a"
+  integrity sha512-pq/rqJwJWkbS10crsG5bgnrisL8pML79KlMKQMoQwLUjlPAkrUHMvHJ3oGwE7WHR61Lv/nadMwXVAD2b+fpD8Q==
+  dependencies:
+    "@types/node" "*"
+
+"@types/mongodb@*":
+  version "3.1.28"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.1.28.tgz#c049cdff343788d77f5cc8c5f2e4af72ba7d047b"
+  integrity sha512-tG+QqJ/hir2p0069ee28t2O9tlGRJKDq1WFZC2QYMlU47LGdldLL8tepfTq6aFLvP58OpwSoxaJ/qjW93ob1NQ==
+  dependencies:
+    "@types/bson" "*"
+    "@types/node" "*"
+
+"@types/mongoose@5.5.7":
+  version "5.5.7"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.7.tgz#fb39d79f81527eb19b15095fb8c23bc649a3354d"
+  integrity sha512-bQTgH19lwY56T4YE6YTeobTtJ4EVTqP8ST5lFxjecPHC+/ebpHU8W01by4KEGSg5AeWFWVCePUi44wHuFzbxDQ==
+  dependencies:
+    "@types/mongodb" "*"
+    "@types/node" "*"
+
+"@types/node@*":
+  version "12.0.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.12.tgz#cc791b402360db1eaf7176479072f91ee6c6c7ca"
+  integrity sha512-Uy0PN4R5vgBUXFoJrKryf5aTk3kJ8Rv3PdlHjl6UaX+Cqp1QE0yPQ68MPXGrZOfG7gZVNDIJZYyot0B9ubXUrQ==
+
+"@types/node@12.0.10":
+  version "12.0.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.10.tgz#51babf9c7deadd5343620055fc8aff7995c8b031"
+  integrity sha512-LcsGbPomWsad6wmMNv7nBLw7YYYyfdYcz6xryKYQhx89c3XXan+8Q6AJ43G5XDIaklaVkK3mE4fCb0SBvMiPSQ==
+
 async-limiter@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
+  integrity sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
 
-eris@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/eris/-/eris-0.9.0.tgz#a2796839f7768cd40645c2c6b1bf0c86ba3147f3"
+common-tags@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/common-tags/-/common-tags-1.8.0.tgz#8e3153e542d4a39e9b10554434afaaf98956a937"
+  integrity sha512-6P6g0uetGpW/sdyUy/iQQCbFF0kWVMSIVSyYz7Zgjcgh8mgw8PQzDNZeyZ5DQ2gM7LBoZPHmnjz8rUthkBG5tw==
+
+eris@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/eris/-/eris-0.10.0.tgz#cfc3ba5721fe3c116e4f3dac5a2bb07b00ff7558"
+  integrity sha512-xAvmD4wsE5mwuiP+wy8RiarjiuwCylSsglKqru4J4sk0/WGOnSOfEZf43YLx/TcF4J1D4B2VMTq38446Bk1x1Q==
   dependencies:
     ws "^6.0.0"
   optionalDependencies:
@@ -18,13 +63,29 @@ eris@0.9.0:
 opusscript@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/opusscript/-/opusscript-0.0.4.tgz#c718edcfdcd2a1f55fadb266dd07268d4a46afde"
+  integrity sha512-bEPZFE2lhUJYQD5yfTFO4RhbRZ937x6hRwBC1YoGacT35bwDVwKFP1+amU8NYfZL/v4EU7ZTU3INTqzYAnuP7Q==
 
 tweetnacl@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.0.tgz#713d8b818da42068740bf68386d0479e66fc8a7b"
+  integrity sha1-cT2LgY2kIGh0C/aDhtBHnmb8ins=
+
+typescript@3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 ws@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.0.tgz#119a9dbf92c54e190ec18d10e871d55c95cf9373"
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.2.tgz#3cc7462e98792f0ac679424148903ded3b9c3ad8"
+  integrity sha512-rfUqzvz0WxmSXtJpPMX2EeASXabOrSMk1ruMOV3JBTBjo4ac2lDjGGsbQSyxj8Odhw5fBib8ZKEjDNvgouNKYw==
   dependencies:
     async-limiter "~1.0.0"
+
+yotsuba@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/yotsuba/-/yotsuba-0.0.6.tgz#95fe980257bb144df37f27f491232e9b520fdf1d"
+  integrity sha512-FCjEjapdZ87Xxyz3r8ioOMBuZ5WvqO8kOgrGy+s1BWdiIkPYqg/s8RW1+XsR1YCs14xOUqMpJuxBzoEveb593w==
+  dependencies:
+    "@augu/immutable" "0.0.1"
+    common-tags "1.8.0"
