@@ -1,8 +1,0 @@
-node_modules/
-examples/
-test/
-.gitignore
-LICENSE
-README.md
-*.lock
-*.log

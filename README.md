@@ -1,55 +1,53 @@
-<h1 align="center">eris-commando</h1>
+# eris-commando
+> :gear: **| Lightweight command framework for the [Eris](https://abal.moe/Eris) library**
+>
+> [Documentation](https://docs.augu.dev/eris-commando) **|** [NPM](https://npmjs.com/package/eris-commando)
 
----------------
-> eris-commando is a command router (framework) for the [Eris](https://abal.moe/Eris) library.
+## Example Bot
+> More examples can be located [here](https://github.com/eris-commando/example-bot).
+
+```ts
+import { CommandoClient, MongoDialect, LoggerPreset } from 'eris-commando';
+import { sep } from 'path';
+
+const bot = new CommandoClient({
+    token: '',
+    prefix: '!',
+    commands: `${process.cwd()}${sep}commands`,
+    events: `${process.cwd()}${sep}events`,
+    tasks: `${process.cwd()}${sep}tasks`,
+    monitors: `${process.cwd()}${sep}monitors`,
+    inhibitors: `${process.cwd()}${sep}inhibitors`
+});
+
+bot.use(new LoggerPreset());
+bot.start();
+```
+
+## Features
+- Tasks - Run any tasks in the background
+- Monitors - Any monitors when a command is executed
+- Inhibitors - Any boolean checks before a command is executed
+- Presets - Plugin API to create any presets
+
+## Bots that use eris-commando
+> If you are using the library, submit a Pull Request!
+
+- `Bot#0000` **~** This can be you!
 
 ## Installation
-
-> Master Branch:
-
+### Normal
 ```sh
 $ npm i eris-commando
-# or
+# OR
 $ yarn add eris-commando
 ```
 
-> Indev Branch:
->
-> :warning: **Don't try this build since it may cause errors.** :warning:
+### Cutting Edge Branch
+> :warning: You might want not to use it, it can break at anytime!
 
 ```sh
-$ npm i github:auguwu/eris-commando#dev
-# or
-$ yarn add github:auguwu/eris-commando#dev
+$ npm i github:eris-commando/eris-commando#edge
+# OR
+$ yarn add github:eris-commando/eris-commando#edge
 ```
-
-## Example Bot
-
-```js
-const { CommandoClient, MongoDialect, LoggerPreset } = require('eris-commando');
-const { resolve } = require('path');
-
-const client = new CommandoClient({
-    token: 'TOKEN',
-    prefix: '!',
-    commands: resolve(__dirname, 'commands'),
-    events: resolve(__dirname, 'events'),
-    dialect: new MongoDialect('mongodb://localhost:27017'),
-    tasks: {
-        enabled: false
-    },
-    inhibitors: {
-        enabled: true,
-        path: resolve(__dirname, 'inhibitors')
-    }
-});
-
-client.use(new LoggerPreset());
-client.start();
-```
-
-## Bots that use eris-commando:
-
-- This can be your bot **~** Created by you!
-
-> If you use `eris-commando`, submit a pull request
