@@ -22,7 +22,7 @@
         "eris": "0.11.0"
     },
     "devDependencies": {
-        "@augu/eslint-config": "1.0.1",
+        "@augu/eslint-config": "1.3.3",
         "@types/node": "12.12.14",
         "@typescript-eslint/eslint-plugin": "2.10.0",
         "@typescript-eslint/parser": "2.10.0",
