@@ -114,10 +114,10 @@
     "@types/node" "*"
     "@types/pg-types" "*"
 
-"@types/sequelize@4.27.16":
-  version "4.27.16"
-  resolved "https://registry.yarnpkg.com/@types/sequelize/-/sequelize-4.27.16.tgz#ee5bcd6103ab3a333c42f7f58130f56c9390d4ea"
-  integrity sha512-Srx4q3NWv08YoVOylvENECGaVGyt7JrPnCbiEUvf8bPs+VTVPYVkvKtngjyBb1dA6WuD4mAqDyr1L7SEkGGJxQ==
+"@types/sequelize@4.28.9":
+  version "4.28.9"
+  resolved "https://registry.yarnpkg.com/@types/sequelize/-/sequelize-4.28.9.tgz#64d0fad07de2f30ef11003a8c2ef5ac0321de115"
+  integrity sha512-QqYgkw/2fEc0FyEQejnxM7cHKB8XBV3Y69k7GSFOToQBOXos0PJVqNpgROXZddXIkl2d6zicYssHuy75ws84sw==
   dependencies:
     "@types/bluebird" "*"
     "@types/continuation-local-storage" "*"

@@ -33,7 +33,7 @@
     "optionalDependencies": {
         "@types/pg": "7.4.8",
         "@types/mongoose": "5.5.26",
-        "@types/sequelize": "4.27.16",
+        "@types/sequelize": "4.28.9",
         "mongoose": "5.7.14",
         "pg": "7.14.0",
         "sequelize": "5.21.2",
