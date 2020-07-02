@@ -19,7 +19,7 @@
         "docs": "rm -fr docs && typedoc --mode modules --out docs"
     },
     "dependencies": {
-        "eris": "0.11.2"
+        "eris": "0.13.3"
     },
     "devDependencies": {
         "@augu/eslint-config": "1.3.3",
