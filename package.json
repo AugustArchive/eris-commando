@@ -31,11 +31,11 @@
         "typedoc": "0.15.4"
     },
     "optionalDependencies": {
-        "@types/pg": "7.4.8",
+        "@types/pg": "7.14.4",
         "@types/mongoose": "5.5.26",
         "@types/sequelize": "4.27.16",
         "mongoose": "5.7.14",
-        "pg": "7.14.0",
+        "pg": "7.18.2",
         "sequelize": "5.21.2",
         "sqlite": "3.0.3"
     }
